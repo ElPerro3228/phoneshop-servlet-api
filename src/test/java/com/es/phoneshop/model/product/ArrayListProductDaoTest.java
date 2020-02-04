@@ -67,7 +67,7 @@ public class ArrayListProductDaoTest
     @Test
     public void shouldGetProductWithExistingId(){
         Product p = new Product (1L, "", "Samsung ", new BigDecimal(1), usd, 1, "");
-        assertEquals(p.getId(), productDao.getProduct(1L).getId());
+        assertEquals(p.getId(), productDao.getProduct(1L).get().getId());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class ArrayListProductDaoTest
 
     @Test
     public void shouldDeleteCorrectProductWithExistingId(){
-        Product product = productDao.getProduct(3L);
+        Product product = productDao.getProduct(3L).get();
         productDao.delete(product.getId());
         assertEquals(0, productDao.findProducts(p->p.getId().equals(product.getId())).size() );
     }
@@ -94,6 +94,6 @@ public class ArrayListProductDaoTest
     @Test
     public void testProductDaoGetProduct(){
         Product product = Mockito.mock(Product.class);
-        Mockito.when(productDaoMock.getProduct(1L)).thenReturn(product);
+        Mockito.when(productDaoMock.getProduct(1L).get()).thenReturn(product);
     }
 }
