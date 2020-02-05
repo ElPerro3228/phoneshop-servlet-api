@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -25,14 +26,15 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductListPageServletTest {
+
+    @InjectMocks
+    private ProductListPageServlet servlet;
     @Mock
     private HttpServletRequest request;
     @Mock
     private HttpServletResponse response;
     @Mock
     private RequestDispatcher requestDispatcher;
-
-    private ProductListPageServlet servlet = new ProductListPageServlet();
 
     @Before
     public void setup(){
@@ -41,27 +43,9 @@ public class ProductListPageServletTest {
 
     @Test
     public void testDoGet() throws ServletException, IOException {
+        servlet.init();
         servlet.doGet(request, response);
-
+        request.setAttribute(anyString(), any());
         verify(requestDispatcher).forward(request, response);
     }
-
-    @Test
-    public void testDoGetSetAttribute() throws ServletException, IOException {
-        servlet.doGet(request, response);
-        verify(request).setAttribute(anyString(), Mockito.any());
-    }
-
-    @Test
-    public void testGetSampleProducts(){
-        ProductListPageServlet servlet = new ProductListPageServlet();
-        try {
-            Method getSampleProducts = servlet.getClass().getDeclaredMethod("getSampleProducts");
-            getSampleProducts.setAccessible(true);
-            Assert.assertNotNull(getSampleProducts.invoke(servlet));
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
