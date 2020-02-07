@@ -16,33 +16,33 @@ public class ArrayListProductDaoTest
 
     @Before
     public void setup() {
-        productDao = new ArrayListProductDao();
+        productDao = ArrayListProductDao.INSTANCE;
         usd = Currency.getInstance("USD");
     }
 
     @Test
     public void shouldNotFindAnyProductWhenIdEqualsZero() {
-        assertTrue(productDao.findProducts(product -> product.getId().equals(0L)).isEmpty());
+        assertTrue(productDao.findProducts(product -> product.getId().equals(0L), SortField.price, SortOrder.asc).isEmpty());
     }
 
     @Test
     public void shouldFindOneProductWhenIdEqualsOne() {
-        assertEquals(1, (long) productDao.findProducts(p -> p.getId().equals(1L)).size());
+        assertEquals(1, productDao.findProducts(p -> p.getId().equals(1L), SortField.price, SortOrder.asc).size());
     }
 
     @Test
     public void shouldChangeProductStateWhenProductIsInArrayList() {
         Product product = new Product(1L, "sgs", "S", new BigDecimal(100), usd, 100, "");
         productDao.save(product);
-        assertTrue(productDao.findProducts(p -> p.getDescription().equals("S")).size() == 1);
+        assertTrue(productDao.findProducts(p -> p.getDescription().equals("S"), SortField.price, SortOrder.asc).size() == 1);
     }
 
 
     @Test
     public void shouldAddProductWithNoExistingId() {
-        int startSize = productDao.findProducts(p->true).size();
+        int startSize = productDao.findProducts(p->true, SortField.price, SortOrder.asc).size();
         productDao.save(new Product (100L, "", "Samsung ", new BigDecimal(1), usd, 1, ""));
-        int endSize = productDao.findProducts(p->true).size();
+        int endSize = productDao.findProducts(p->true, SortField.price, SortOrder.asc).size();
         assertTrue(startSize < endSize);
     }
 
@@ -54,9 +54,9 @@ public class ArrayListProductDaoTest
 
     @Test
     public void shouldDeleteProductWithExistingId() {
-        int startSize = productDao.findProducts(p -> true).size();
+        int startSize = productDao.findProducts(p -> true, SortField.price, SortOrder.asc).size();
         productDao.delete(8L);
-        int endSize = productDao.findProducts(p->true).size();
+        int endSize = productDao.findProducts(p->true, SortField.price, SortOrder.asc).size();
         assertTrue(startSize > endSize);
     }
 
@@ -64,6 +64,12 @@ public class ArrayListProductDaoTest
     public void shouldDeleteCorrectProductWithExistingId() {
         Product product = productDao.getProduct(3L).get();
         productDao.delete(product.getId());
-        assertEquals(0, productDao.findProducts(p->p.getId().equals(product.getId())).size() );
+        assertEquals(0, productDao.findProducts(p->p.getId().equals(product.getId()), SortField.price, SortOrder.asc).size() );
+    }
+
+
+    @Test
+    public void testProductDaoUtilCountMatches() {
+        assertEquals(8, productDao.findProducts(p -> ProductDaoUtil.countMatches(p, "S"), SortField.price, SortOrder.asc).size());
     }
 }

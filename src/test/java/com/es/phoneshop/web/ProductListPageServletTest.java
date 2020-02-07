@@ -2,6 +2,8 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
+import com.es.phoneshop.model.product.SortField;
+import com.es.phoneshop.model.product.SortOrder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +44,7 @@ public class ProductListPageServletTest {
     @Test
     public void testDoGet() throws ServletException, IOException {
         List<Product> products = Collections.emptyList();
-        when(productDao.findProducts(any())).thenReturn(products);
+        when(productDao.findProducts(any(), SortField.price, SortOrder.asc)).thenReturn(products);
         servlet.doGet(request, response);
         verify(request).setAttribute("products", products);
         verify(requestDispatcher).forward(request, response);

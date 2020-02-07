@@ -2,6 +2,8 @@ package com.es.phoneshop.model.product;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.Date;
+import java.util.HashMap;
 
 public class Product {
     private Long id;
@@ -13,6 +15,9 @@ public class Product {
     private Currency currency;
     private int stock;
     private String imageUrl;
+    private int matches = 0;
+
+    private HashMap<Date, BigDecimal> priceHistory;
 
     public Product() {
     }
@@ -25,6 +30,7 @@ public class Product {
         this.currency = currency;
         this.stock = stock;
         this.imageUrl = imageUrl;
+        priceHistory = new HashMap<>();
     }
 
     public Long getId() {
@@ -81,5 +87,21 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public int getMatches() {
+        return matches;
+    }
+
+    public void setMatches(int matches) {
+        this.matches = matches;
+    }
+
+    public HashMap<Date, BigDecimal> getPriceHistory() {
+        return priceHistory;
+    }
+
+    public void setPriceHistory(HashMap<Date, BigDecimal> priceHistory) {
+        this.priceHistory = priceHistory;
     }
 }

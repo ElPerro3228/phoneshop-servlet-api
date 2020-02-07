@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 
 public interface ProductDao {
     Optional<Product> getProduct(Long id);
-    List<Product> findProducts(Predicate<? super Product> predicate);
+    List<Product> findProducts(Predicate<? super Product> predicate, SortField field, SortOrder order);
     void save(Product product);
     void delete(Long id);
 }
