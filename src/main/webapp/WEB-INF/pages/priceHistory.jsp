@@ -1,16 +1,31 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Lenovo
-  Date: 07.02.2020
-  Time: 21:44
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.util.Calendar" %>
+<%@ page import="java.util.GregorianCalendar" %>
 
-</body>
-</html>
+<jsp:useBean id="product" type="com.es.phoneshop.model.product.Product" scope="request"/>
+<tags:master pageTitle="Price History">
+    <p>
+        Welcome to Expert-Soft training!
+    </p>
+    <p>${product.description}</p>
+    <table>
+        <thead>
+        <tr>
+            <td>Date</td>
+            <td class = "price">Price</td>
+        </tr>
+        </thead>
+        <c:forEach var="entry" items="${product.priceHistory.entrySet()}">
+            <tr>
+                <td class = "price"><fmt:formatDate value="${entry.getKey()}"/></td>
+                <td>
+                    <fmt:formatNumber value="${entry.getValue()}" type="currency" currencySymbol="${product.currency.symbol}"/>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</tags:master>

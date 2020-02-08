@@ -22,7 +22,7 @@
                 Price
             </td>
             <td>
-                ${product.price}
+                <a href="${pageContext.servletContext.contextPath}/products/priceHistory/${product.id}">${product.price}</a>
             </td>
         </tr>
         <tr>

@@ -1,5 +1,6 @@
 package com.es.phoneshop.model.product;
 
+import com.es.phoneshop.demodata.ProductDemoDataServletContextListener;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,13 +12,14 @@ import static org.junit.Assert.*;
 public class ArrayListProductDaoTest
 {
 
-    private ProductDao productDao;
+    private ArrayListProductDao productDao;
     private Currency usd;
 
     @Before
     public void setup() {
         productDao = ArrayListProductDao.INSTANCE;
         usd = Currency.getInstance("USD");
+        productDao.generateTestData();
     }
 
     @Test
@@ -65,11 +67,5 @@ public class ArrayListProductDaoTest
         Product product = productDao.getProduct(3L).get();
         productDao.delete(product.getId());
         assertEquals(0, productDao.findProducts(p->p.getId().equals(product.getId()), SortField.price, SortOrder.asc).size() );
-    }
-
-
-    @Test
-    public void testProductDaoUtilCountMatches() {
-        assertEquals(8, productDao.findProducts(p -> ProductDaoUtil.countMatches(p, "S"), SortField.price, SortOrder.asc).size());
     }
 }

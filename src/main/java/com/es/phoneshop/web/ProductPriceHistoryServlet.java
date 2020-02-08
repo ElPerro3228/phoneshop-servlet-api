@@ -1,8 +1,10 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.ArrayListProductDao;
+import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 
+import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,9 @@ public class ProductPriceHistoryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        Long id = Long.valueOf(req.getPathInfo().substring(1));
+        Product product = productDao.getProduct(id).get();
+        req.setAttribute("product", product);
+        req.getRequestDispatcher("/WEB-INF/pages/priceHistory.jsp").forward(req, resp);
     }
 }

@@ -8,14 +8,16 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.math.BigDecimal;
 import java.util.Currency;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 
 public class ProductDemoDataServletContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+        generateSampleData();
+    }
+
+    public void generateSampleData() {
         ProductDao productDao = ArrayListProductDao.INSTANCE;
         Currency usd = Currency.getInstance("USD");
         productDao.save(new Product(1L, "sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg"));
@@ -32,10 +34,19 @@ public class ProductDemoDataServletContextListener implements ServletContextList
         productDao.save(new Product(12L, "simc61", "Siemens C61", new BigDecimal(80), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C61.jpg"));
         productDao.save(new Product(13L, "simsxg75", "Siemens SXG75", new BigDecimal(150), usd, 40, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20SXG75.jpg"));
 
-        productDao.getProduct(1L).get().getPriceHistory().put(new Date(), new BigDecimal(100));
-        productDao.getProduct(2L).get().getPriceHistory().put(new Date(1), new BigDecimal(100));
-        productDao.getProduct(3L).get().getPriceHistory().put( new GregorianCalendar(2009, 10, 10).getTime() , new BigDecimal(100));
-        productDao.getProduct(4L).get().getPriceHistory().put(new Date(), new BigDecimal(100));
+        productDao.getProduct(1L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.getProduct(2L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.getProduct(3L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.getProduct(4L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.getProduct(5L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.getProduct(6L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.getProduct(7L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.getProduct(8L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.getProduct(9L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.getProduct(10L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.getProduct(11L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.getProduct(12L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.getProduct(13L).get().getPriceHistory().put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
     }
 
     @Override
