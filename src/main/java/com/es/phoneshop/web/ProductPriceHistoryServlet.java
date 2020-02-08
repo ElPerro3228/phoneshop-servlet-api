@@ -4,7 +4,6 @@ import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 
-import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

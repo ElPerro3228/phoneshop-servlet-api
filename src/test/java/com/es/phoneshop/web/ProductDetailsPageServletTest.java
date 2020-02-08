@@ -1,6 +1,5 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.demodata.ProductDemoDataServletContextListener;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import org.junit.Before;
@@ -38,7 +37,7 @@ public class ProductDetailsPageServletTest {
     private ProductDao productDao;
 
     @Before
-    public void setup(){
+    public void setup() {
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
     }
 

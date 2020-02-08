@@ -17,7 +17,7 @@ public class ProductDaoUtil {
         return wasAnyMatches;
     }
 
-    public Comparator<Product> getComparator(SortField field, SortOrder order){
+    public Comparator<Product> getComparator(SortField field, SortOrder order) {
         if ((field == null) || (order == null)) {
             return new DefaultComparator();
         }
@@ -45,14 +45,14 @@ public class ProductDaoUtil {
     private class ProductAscPriceComparator implements Comparator<Product> {
         @Override
         public int compare(Product o1, Product o2) {
-            return o1.getPrice().compareTo(o2.getPrice());
+            return o2.getPrice().compareTo(o1.getPrice());
         }
     }
 
     private class ProductDescPriceComparator implements Comparator<Product> {
         @Override
         public int compare(Product o1, Product o2) {
-            return o2.getPrice().compareTo(o1.getPrice());
+            return o1.getPrice().compareTo(o2.getPrice());
         }
     }
 

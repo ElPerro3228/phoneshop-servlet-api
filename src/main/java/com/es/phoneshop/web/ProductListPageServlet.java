@@ -26,7 +26,7 @@ public class ProductListPageServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/pages/productList.jsp").forward(request, response);
     }
 
-    private List<Product> getProducts(String query, HttpServletRequest req){
+    private List<Product> getProducts(String query, HttpServletRequest req) {
         String field = req.getParameter("field");
         String order = req.getParameter("order");
         SortOrder sortOrder = order == null ? null : order.equals("asc") ? SortOrder.asc : SortOrder.desc;
