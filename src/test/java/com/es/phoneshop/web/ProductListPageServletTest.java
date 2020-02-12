@@ -44,7 +44,7 @@ public class ProductListPageServletTest {
     @Test
     public void testDoGet() throws ServletException, IOException {
         List<Product> products = Collections.emptyList();
-        when(productDao.findProducts(any(), any(), any())).thenReturn(products);
+        when(productDao.findProducts(any(), anyString(), any(), any())).thenReturn(products);
         servlet.doGet(request, response);
         verify(request).setAttribute("products", products);
         verify(requestDispatcher).forward(request, response);

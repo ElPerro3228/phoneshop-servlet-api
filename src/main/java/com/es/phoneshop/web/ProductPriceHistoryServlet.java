@@ -16,7 +16,7 @@ public class ProductPriceHistoryServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        productDao = ArrayListProductDao.INSTANCE;
+        productDao = ArrayListProductDao.getInstance();
     }
 
     @Override

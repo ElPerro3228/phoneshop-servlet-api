@@ -5,6 +5,10 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static org.junit.Assert.*;
 
@@ -13,51 +17,53 @@ public class ArrayListProductDaoTest
 
     private ProductDao productDao;
     private Currency usd;
+    private Map<Date, BigDecimal> priceHistory;
 
     @Before
     public void setup() {
-        productDao = ArrayListProductDao.INSTANCE;
+        productDao = ArrayListProductDao.getInstance();
         usd = Currency.getInstance("USD");
+        priceHistory = new TreeMap<>();
         generateTestData();
     }
 
     @Test
     public void shouldNotFindAnyProductWhenIdEqualsZero() {
-        assertTrue(productDao.findProducts(product -> product.getId().equals(0L), null, null).isEmpty());
+        assertTrue(productDao.findProducts(product -> product.getId().equals(0L),"", null, null).isEmpty());
     }
 
     @Test
     public void shouldFindOneProductWhenIdEqualsOne() {
-        assertEquals(1, productDao.findProducts(p -> p.getId().equals(1L), null, null).size());
+        assertEquals(1, productDao.findProducts(p -> p.getId().equals(1L), "", null, null).size());
     }
 
     @Test
     public void shouldChangeProductStateWhenProductIsInArrayList() {
-        Product product = new Product(1L, "sgs", "S", new BigDecimal(100), usd, 100, "");
+        Product product = new Product(1L, "sgs", "S", new BigDecimal(100), usd, 100, "", priceHistory);
         productDao.save(product);
-        assertTrue(productDao.findProducts(p -> p.getDescription().equals("S"), null, null).size() == 1);
+        assertTrue(productDao.findProducts(p -> p.getDescription().equals("S"), "", null, null).size() == 1);
     }
 
 
     @Test
     public void shouldAddProductWithNoExistingId() {
-        int startSize = productDao.findProducts(p->true, SortField.price, SortOrder.asc).size();
-        productDao.save(new Product (100L, "", "Samsung ", new BigDecimal(1), usd, 1, ""));
-        int endSize = productDao.findProducts(p->true, null, null).size();
+        int startSize = productDao.findProducts(p->true, "", SortField.price, SortOrder.asc).size();
+        productDao.save(new Product (100L, "", "Samsung ", new BigDecimal(1), usd, 1, "", priceHistory));
+        int endSize = productDao.findProducts(p->true, "", null, null).size();
         assertTrue(startSize < endSize);
     }
 
     @Test
     public void shouldGetProductWithExistingId() {
-        Product p = new Product (1L, "", "Samsung ", new BigDecimal(1), usd, 1, "");
+        Product p = new Product (1L, "", "Samsung ", new BigDecimal(1), usd, 1, "", priceHistory);
         assertEquals(p.getId(), productDao.getProduct(1L).get().getId());
     }
 
     @Test
     public void shouldDeleteProductWithExistingId() {
-        int startSize = productDao.findProducts(p -> true, null, null).size();
+        int startSize = productDao.findProducts(p -> true, "", null, null).size();
         productDao.delete(8L);
-        int endSize = productDao.findProducts(p->true, null, null).size();
+        int endSize = productDao.findProducts(p->true, "", null, null).size();
         assertTrue(startSize > endSize);
     }
 
@@ -65,24 +71,25 @@ public class ArrayListProductDaoTest
     public void shouldDeleteCorrectProductWithExistingId() {
         Product product = productDao.getProduct(3L).get();
         productDao.delete(product.getId());
-        assertEquals(0, productDao.findProducts(p->p.getId().equals(product.getId()), null, null).size() );
+        assertEquals(0, productDao.findProducts(p->p.getId().equals(product.getId()), "", null, null).size() );
     }
 
     private void generateTestData() {
         Currency usd = Currency.getInstance("USD");
-        productDao.save(new Product(1L, "sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg"));
-        productDao.save(new Product(2L, "sgs2", "Samsung Galaxy S II", new BigDecimal(200), usd, 0, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20II.jpg"));
-        productDao.save(new Product(3L, "sgs3", "Samsung Galaxy S III", new BigDecimal(300), usd, 5, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20III.jpg"));
-        productDao.save(new Product(4L, "iphone", "Apple iPhone", new BigDecimal(200), usd, 10, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Apple/Apple%20iPhone.jpg"));
-        productDao.save(new Product(5L, "iphone6", "Apple iPhone 6", new BigDecimal(1000), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Apple/Apple%20iPhone%206.jpg"));
-        productDao.save(new Product(6L, "htces4g", "HTC EVO Shift 4G", new BigDecimal(320), usd, 3, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/HTC/HTC%20EVO%20Shift%204G.jpg"));
-        productDao.save(new Product(7L, "sec901", "Sony Ericsson C901", new BigDecimal(420), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Sony/Sony%20Ericsson%20C901.jpg"));
-        productDao.save(new Product(8L, "xperiaxz", "Sony Xperia XZ", new BigDecimal(120), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Sony/Sony%20Xperia%20XZ.jpg"));
-        productDao.save(new Product(9L, "nokia3310", "Nokia 3310", new BigDecimal(70), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Nokia/Nokia%203310.jpg"));
-        productDao.save(new Product(10L, "palmp", "Palm Pixi", new BigDecimal(170), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Palm/Palm%20Pixi.jpg"));
-        productDao.save(new Product(11L, "simc56", "Siemens C56", new BigDecimal(70), usd, 20, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C56.jpg"));
-        productDao.save(new Product(12L, "simc61", "Siemens C61", new BigDecimal(80), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C61.jpg"));
-        productDao.save(new Product(13L, "simsxg75", "Siemens SXG75", new BigDecimal(150), usd, 40, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20SXG75.jpg"));
+        priceHistory.put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
+        productDao.save(new Product(1L, "sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg", priceHistory));
+        productDao.save(new Product(2L, "sgs2", "Samsung Galaxy S II", new BigDecimal(200), usd, 0, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20II.jpg", priceHistory));
+        productDao.save(new Product(3L, "sgs3", "Samsung Galaxy S III", new BigDecimal(300), usd, 5, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20III.jpg", priceHistory));
+        productDao.save(new Product(4L, "iphone", "Apple iPhone", new BigDecimal(200), usd, 10, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Apple/Apple%20iPhone.jpg", priceHistory));
+        productDao.save(new Product(5L, "iphone6", "Apple iPhone 6", new BigDecimal(1000), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Apple/Apple%20iPhone%206.jpg", priceHistory));
+        productDao.save(new Product(6L, "htces4g", "HTC EVO Shift 4G", new BigDecimal(320), usd, 3, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/HTC/HTC%20EVO%20Shift%204G.jpg", priceHistory));
+        productDao.save(new Product(7L, "sec901", "Sony Ericsson C901", new BigDecimal(420), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Sony/Sony%20Ericsson%20C901.jpg", priceHistory));
+        productDao.save(new Product(8L, "xperiaxz", "Sony Xperia XZ", new BigDecimal(120), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Sony/Sony%20Xperia%20XZ.jpg", priceHistory));
+        productDao.save(new Product(9L, "nokia3310", "Nokia 3310", new BigDecimal(70), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Nokia/Nokia%203310.jpg", priceHistory));
+        productDao.save(new Product(10L, "palmp", "Palm Pixi", new BigDecimal(170), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Palm/Palm%20Pixi.jpg", priceHistory));
+        productDao.save(new Product(11L, "simc56", "Siemens C56", new BigDecimal(70), usd, 20, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C56.jpg", priceHistory));
+        productDao.save(new Product(12L, "simc61", "Siemens C61", new BigDecimal(80), usd, 30, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20C61.jpg", priceHistory));
+        productDao.save(new Product(13L, "simsxg75", "Siemens SXG75", new BigDecimal(150), usd, 40, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20SXG75.jpg", priceHistory));
     }
 
 }

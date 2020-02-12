@@ -1,6 +1,12 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.model.product.*;
+
+import com.es.phoneshop.model.product.ArrayListProductDao;
+import com.es.phoneshop.model.product.Product;
+import com.es.phoneshop.model.product.ProductDao;
+import com.es.phoneshop.model.product.SortField;
+import com.es.phoneshop.model.product.SortOrder;
+import com.es.phoneshop.service.SortOrderService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +21,7 @@ public class ProductListPageServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        productDao = ArrayListProductDao.INSTANCE;
+        productDao = ArrayListProductDao.getInstance();
     }
 
     @Override
@@ -29,12 +35,12 @@ public class ProductListPageServlet extends HttpServlet {
     private List<Product> getProducts(String query, HttpServletRequest req) {
         String field = req.getParameter("field");
         String order = req.getParameter("order");
-        SortOrder sortOrder = order == null ? null : order.equals("asc") ? SortOrder.asc : SortOrder.desc;
-        SortField sortField = field == null ? null : field.equals("price") ? SortField.price : SortField.description;
+        SortOrder sortOrder = SortOrderService.getSortOrder(order);
+        SortField sortField = SortOrderService.getSortField(field);
         if (query == null || "".equals(query)) {
-            return productDao.findProducts(p -> ((p.getPrice().doubleValue() > 0) && (p.getStock() > 0)), sortField, sortOrder);
+            return productDao.findProducts(p -> ((p.getPrice().doubleValue() > 0) && (p.getStock() > 0)), "", sortField, sortOrder);
         }
-        return productDao.findProducts(p -> ProductDaoUtil.countMatches(p, query), sortField, sortOrder);
+        return productDao.findProducts(p -> true, query, sortField, sortOrder);
     }
 
 }

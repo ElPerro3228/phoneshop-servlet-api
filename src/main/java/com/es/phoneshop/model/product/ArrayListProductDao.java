@@ -1,15 +1,30 @@
 package com.es.phoneshop.model.product;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public enum ArrayListProductDao implements ProductDao {
-    INSTANCE;
-    private List<Product> products = new ArrayList<>();
-    private long maxId = 1L;
+public class ArrayListProductDao implements ProductDao {
 
-    ArrayListProductDao() {
+    private static ArrayListProductDao instance;
+
+    private List<Product> products;
+    private long maxId;
+
+    private ArrayListProductDao() {
+        products = new ArrayList<>();
+        maxId = 1L;
+    }
+
+    public static ArrayListProductDao getInstance(){
+        if (instance == null) {
+            instance = new ArrayListProductDao();
+        }
+        return instance;
     }
 
 
@@ -24,15 +39,17 @@ public enum ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public synchronized List<Product> findProducts(Predicate<? super Product> predicate, SortField field, SortOrder order) {
-        ProductDaoUtil util = new ProductDaoUtil();
+    public synchronized List<Product> findProducts(Predicate<? super Product> predicate, String q, SortField field, SortOrder order) {
         return products.stream()
                 .filter(p -> p.getPrice() != null)
                 .filter(p -> p.getPrice().doubleValue() > 0)
                 .filter(p -> p.getStock() > 0)
                 .filter(predicate)
-                .sorted(Comparator.comparingInt(Product::getMatches).reversed())
-                .sorted(util.getComparator(field, order))
+                .map(p -> new SearchResultEntry(p, 0))
+                .filter(s -> ProductDaoUtil.countMatches(s.getProduct(), q))
+                .sorted(Comparator.comparingInt(SearchResultEntry::getCountOfMatches).reversed())
+                .map(SearchResultEntry::getProduct)
+                .sorted(ProductDaoUtil.getComparator(field, order))
                 .collect(Collectors.toList());
     }
 
