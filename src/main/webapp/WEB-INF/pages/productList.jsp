@@ -18,13 +18,13 @@
         <td>Image</td>
         <td>
           Description
-          <a href="products?query=${param.query}&field=description&order=asc">${order eq "asc" ? "&#8657;" : "&#8659;"}</a>
-          <a href="products?query=${param.query}&field=description&order=desc">${order eq "asc" ? "&#8659;" : "&#8657;"}</a>
+          <tags:sortLink field="description" order="asc"/>
+          <tags:sortLink field="description" order="desc"/>
         </td>
         <td class="price">
           Price
-          <a href="products?query=${param.query}&field=price&order=asc">${order eq "asc" ? "&#8657;" : "&#8659;"}</a>
-          <a href="products?query=${param.query}&field=price&order=desc">${order eq "asc" ? "&#8659;" : "&#8657;"}</a>
+          <tags:sortLink field="price" order="asc"/>
+          <tags:sortLink field="price" order="desc"/>
         </td>
       </tr>
     </thead>
@@ -33,7 +33,7 @@
         <td>
           <img class="product-tile" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
         </td>
-        <td><a href = "products/${product.id}">${product.description}</a></td>
+        <td><a href = "products/${product.id}"><c:out value="${product.description}"/></a></td>
         <td class="price">
           <a href="products/priceHistory/${product.id}"><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/></a>
         </td>

@@ -46,7 +46,7 @@ public class ArrayListProductDao implements ProductDao {
                 .filter(p -> p.getStock() > 0)
                 .filter(predicate)
                 .map(p -> new SearchResultEntry(p, 0))
-                .filter(s -> ProductDaoUtil.countMatches(s.getProduct(), q))
+                .filter(s -> ProductDaoUtil.countMatches(s, q))
                 .sorted(Comparator.comparingInt(SearchResultEntry::getCountOfMatches).reversed())
                 .map(SearchResultEntry::getProduct)
                 .sorted(ProductDaoUtil.getComparator(field, order))

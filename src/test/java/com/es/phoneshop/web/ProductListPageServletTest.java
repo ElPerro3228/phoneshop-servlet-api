@@ -4,11 +4,14 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.product.SortField;
 import com.es.phoneshop.model.product.SortOrder;
+import com.es.phoneshop.service.OrderService;
+import net.bytebuddy.TypeCache;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.servlet.RequestDispatcher;
@@ -35,6 +38,8 @@ public class ProductListPageServletTest {
     private RequestDispatcher requestDispatcher;
     @Mock
     private ProductDao productDao;
+    @Mock
+    private OrderService orderService;
 
     @Before
     public void setup(){
@@ -44,7 +49,11 @@ public class ProductListPageServletTest {
     @Test
     public void testDoGet() throws ServletException, IOException {
         List<Product> products = Collections.emptyList();
-        when(productDao.findProducts(any(), anyString(), any(), any())).thenReturn(products);
+        SortField sortField = SortField.price;
+        SortOrder sortOrder = SortOrder.desc;
+        when(orderService.getSortOrder(any())).thenReturn(sortOrder);
+        when(orderService.getSortField(any())).thenReturn(sortField);
+        when(productDao.findProducts(any(), anyString(), Mockito.same(sortField), Mockito.same(sortOrder))).thenReturn(products);
         servlet.doGet(request, response);
         verify(request).setAttribute("products", products);
         verify(requestDispatcher).forward(request, response);

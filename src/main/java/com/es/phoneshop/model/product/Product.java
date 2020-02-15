@@ -17,7 +17,6 @@ public class Product {
     private Currency currency;
     private int stock;
     private String imageUrl;
-    private int matches = 0;
 
     private Map<Date, BigDecimal> priceHistory;
 
@@ -89,14 +88,6 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public int getMatches() {
-        return matches;
-    }
-
-    public void setMatches(int matches) {
-        this.matches = matches;
     }
 
     public Map<Date, BigDecimal> getPriceHistory() {

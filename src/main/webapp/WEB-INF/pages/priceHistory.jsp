@@ -11,7 +11,7 @@
     <p>
         Welcome to Expert-Soft training!
     </p>
-    <p>${product.description}</p>
+    <p><c:out value="${product.description}"/></p>
     <table>
         <thead>
         <tr>

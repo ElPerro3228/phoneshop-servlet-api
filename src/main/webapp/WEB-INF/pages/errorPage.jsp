@@ -4,5 +4,5 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <tags:master pageTitle="Product Details">
-    <p>Product not found, sorry</p>
+    <p>Page not found, sorry</p>
 </tags:master>

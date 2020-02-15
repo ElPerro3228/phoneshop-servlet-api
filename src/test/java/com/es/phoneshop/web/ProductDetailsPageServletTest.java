@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,6 +24,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ProductDetailsPageServletTest {
 
+    private static final String PATH_INFO = "/1";
     @InjectMocks
     private ProductDetailsPageServlet servlet;
     @Mock
@@ -43,10 +43,9 @@ public class ProductDetailsPageServletTest {
 
     @Test
     public void testDoGet() throws ServletException, IOException {
-        String pathInfo = "/1";
-        when(request.getPathInfo()).thenReturn(pathInfo);
+        when(request.getPathInfo()).thenReturn(PATH_INFO);
         Product product = new Product();
-        when(productDao.getProduct(anyLong())).thenReturn(Optional.of(product));
+        when(productDao.getProduct(1L)).thenReturn(Optional.of(product));
         servlet.doGet(request, response);
         verify(request).setAttribute("product", product);
         verify(requestDispatcher).forward(request, response);

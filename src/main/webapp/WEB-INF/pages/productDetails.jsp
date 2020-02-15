@@ -14,7 +14,7 @@
                 Description
             </td>
             <td>
-                ${product.description}
+                <c:out value="${product.description}"/>
             </td>
         </tr>
         <tr>
@@ -22,7 +22,7 @@
                 Price
             </td>
             <td>
-                <a href="${pageContext.servletContext.contextPath}/products/priceHistory/${product.id}">${product.price}</a>
+                <a href="${pageContext.servletContext.contextPath}/products/priceHistory/${product.id}"><c:out value="${product.price}"/></a>
             </td>
         </tr>
         <tr>
@@ -30,7 +30,7 @@
                 Stock
             </td>
             <td>
-                ${product.stock}
+                <c:out value="${product.stock}"/>
             </td>
         </tr>
         <tr>

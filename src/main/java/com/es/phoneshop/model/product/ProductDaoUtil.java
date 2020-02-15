@@ -4,14 +4,14 @@ import java.util.Comparator;
 
 public final class ProductDaoUtil {
 
-    public static boolean countMatches(Product p, String query) {
+    public static boolean countMatches(SearchResultEntry p, String query) {
         boolean wasAnyMatches = false;
-        p.setMatches(0);
+        p.setCountOfMatches(0);
         String[] splittedQuery = query.toLowerCase().split(" ");
         for (String s : splittedQuery) {
-            if (p.getDescription().toLowerCase().contains(s)) {
+            if (p.getProduct().getDescription().toLowerCase().contains(s)) {
                 wasAnyMatches = true;
-                p.setMatches(p.getMatches() + 1);
+                p.setCountOfMatches(p.getCountOfMatches() + 1);
             }
         }
         return wasAnyMatches;
@@ -23,7 +23,7 @@ public final class ProductDaoUtil {
             return new DefaultComparator();
         }
         if (field == SortField.price) {
-            comparator = Comparator.comparing(Product::getPrice);
+            comparator = Comparator.comparing(Product::getPrice).reversed();
         } else {
             comparator = Comparator.comparing(Product::getDescription);
         }
