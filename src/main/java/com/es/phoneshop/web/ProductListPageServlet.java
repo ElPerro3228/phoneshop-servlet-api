@@ -39,10 +39,7 @@ public class ProductListPageServlet extends HttpServlet {
         String order = req.getParameter("order");
         SortOrder sortOrder = orderService.getSortOrder(order);
         SortField sortField = orderService.getSortField(field);
-        if (query == null || "".equals(query)) {
-            return productDao.findProducts(p -> ((p.getPrice().doubleValue() > 0) && (p.getStock() > 0)), "", sortField, sortOrder);
-        }
-        return productDao.findProducts(p -> true, query, sortField, sortOrder);
+        return orderService.createProductList(query, sortOrder, sortField);
     }
 
 }

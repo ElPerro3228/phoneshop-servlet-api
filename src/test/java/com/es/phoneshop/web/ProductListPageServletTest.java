@@ -9,6 +9,8 @@ import net.bytebuddy.TypeCache;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -22,6 +24,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -40,6 +43,8 @@ public class ProductListPageServletTest {
     private ProductDao productDao;
     @Mock
     private OrderService orderService;
+    @Captor
+    private ArgumentCaptor<List<Product>> productsArgumentCaptor;
 
     @Before
     public void setup(){
@@ -51,11 +56,14 @@ public class ProductListPageServletTest {
         List<Product> products = Collections.emptyList();
         SortField sortField = SortField.price;
         SortOrder sortOrder = SortOrder.desc;
+
         when(orderService.getSortOrder(any())).thenReturn(sortOrder);
         when(orderService.getSortField(any())).thenReturn(sortField);
-        when(productDao.findProducts(any(), anyString(), Mockito.same(sortField), Mockito.same(sortOrder))).thenReturn(products);
+
         servlet.doGet(request, response);
-        verify(request).setAttribute("products", products);
+
+        verify(request).setAttribute(eq("products"), productsArgumentCaptor.capture());
+        assertEquals(products, productsArgumentCaptor.getValue());
         verify(requestDispatcher).forward(request, response);
     }
 }
