@@ -1,6 +1,5 @@
 package com.es.phoneshop.model.product;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

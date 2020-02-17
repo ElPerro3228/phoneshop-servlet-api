@@ -3,9 +3,7 @@ package com.es.phoneshop.model.product;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Product {
     private Long id;
