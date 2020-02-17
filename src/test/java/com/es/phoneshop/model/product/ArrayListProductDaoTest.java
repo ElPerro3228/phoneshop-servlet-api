@@ -12,6 +12,7 @@ import java.util.TreeMap;
 
 import static org.junit.Assert.*;
 
+
 public class ArrayListProductDaoTest
 {
 

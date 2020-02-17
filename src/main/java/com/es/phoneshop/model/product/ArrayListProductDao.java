@@ -26,15 +26,11 @@ public class ArrayListProductDao implements ProductDao {
         return instance;
     }
 
-
     @Override
     public synchronized Optional<Product> getProduct(Long id) {
-        if ((id < maxId) && (id > 0)) {
-            return products.stream()
-                    .filter(p -> p.getId().equals(id))
-                    .findFirst();
-        }
-        return Optional.empty();
+        return products.stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst();
     }
 
     @Override
@@ -54,35 +50,34 @@ public class ArrayListProductDao implements ProductDao {
 
     @Override
     public synchronized void save(Product product) {
-        if (product != null) {
-            if(products.stream().anyMatch(p -> p.getId().equals(product.getId()))) {
-                update(product);
+        if (product.getId() != null) {
+            Optional<Product> found = getProduct(product.getId());
+            if (found.isPresent()) {
+                update(found.get(), product);
             } else {
-                product.setId(maxId);
-                products.add(product);
-                maxId++;
+                addProduct(product);
             }
         }
     }
 
-    private void update(Product product) {
-        products.stream()
-                .filter(p -> p.getId().equals(product.getId()))
-                .forEach(p -> {
-                    p.setId(product.getId());
-                    p.setCode(product.getCode());
-                    p.setCurrency(product.getCurrency());
-                    p.setDescription(product.getDescription());
-                    p.setImageUrl(product.getImageUrl());
-                    p.setPrice(product.getPrice());
-                    p.setStock(product.getStock());
-                });
+    private void addProduct(Product product) {
+        product.setId(maxId);
+        products.add(product);
+        maxId++;
+    }
+
+    private void update(Product oldProduct, Product newProduct) {
+        oldProduct.setId(newProduct.getId());
+        oldProduct.setCode(newProduct.getCode());
+        oldProduct.setCurrency(newProduct.getCurrency());
+        oldProduct.setDescription(newProduct.getDescription());
+        oldProduct.setImageUrl(newProduct.getImageUrl());
+        oldProduct.setPrice(newProduct.getPrice());
+        oldProduct.setStock(newProduct.getStock());
     }
 
     @Override
     public synchronized void delete(Long id) {
-        if ((id < maxId) && (id > 0)) {
-            products.removeIf(p -> p.getId().equals(id));
-        }
+        products.removeIf(p -> p.getId().equals(id));
     }
 }
