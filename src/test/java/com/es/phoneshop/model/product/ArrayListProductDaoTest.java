@@ -29,28 +29,28 @@ public class ArrayListProductDaoTest
     }
 
     @Test
-    public void shouldNotFindAnyProductWhenIdEqualsZero() {
-        assertTrue(productDao.findProducts(product -> product.getId().equals(0L),"", null, null).isEmpty());
+    public void shouldNotFindAnyProductWhenThereAreNoAnyMatches() {
+        assertTrue(productDao.findProducts("w").isEmpty());
     }
 
     @Test
-    public void shouldFindOneProductWhenIdEqualsOne() {
-        assertEquals(1, productDao.findProducts(p -> p.getId().equals(1L), "", null, null).size());
+    public void shouldFindProductsWhenThereAreMatches() {
+        assertFalse(productDao.findProducts("Apple").isEmpty());
     }
 
     @Test
     public void shouldChangeProductStateWhenProductIsInArrayList() {
         Product product = new Product(1L, "sgs", "S", new BigDecimal(100), usd, 100, "", priceHistory);
         productDao.save(product);
-        assertTrue(productDao.findProducts(p -> p.getDescription().equals("S"), "", null, null).size() == 1);
+        assertSame("S", productDao.getProduct(1L).get().getDescription());
     }
 
 
     @Test
     public void shouldAddProductWithNoExistingId() {
-        int startSize = productDao.findProducts(p->true, "", SortField.price, SortOrder.asc).size();
+        int startSize = productDao.findProducts("").size();
         productDao.save(new Product (100L, "", "Samsung ", new BigDecimal(1), usd, 1, "", priceHistory));
-        int endSize = productDao.findProducts(p->true, "", null, null).size();
+        int endSize = productDao.findProducts("").size();
         assertTrue(startSize < endSize);
     }
 
@@ -62,17 +62,16 @@ public class ArrayListProductDaoTest
 
     @Test
     public void shouldDeleteProductWithExistingId() {
-        int startSize = productDao.findProducts(p -> true, "", null, null).size();
+        int startSize = productDao.findProducts("").size();
         productDao.delete(8L);
-        int endSize = productDao.findProducts(p->true, "", null, null).size();
+        int endSize = productDao.findProducts("").size();
         assertTrue(startSize > endSize);
     }
 
     @Test
     public void shouldDeleteCorrectProductWithExistingId() {
-        Product product = productDao.getProduct(3L).get();
-        productDao.delete(product.getId());
-        assertEquals(0, productDao.findProducts(p->p.getId().equals(product.getId()), "", null, null).size() );
+        productDao.delete(4L);
+        assertFalse(productDao.getProduct(4L).isPresent());
     }
 
     private void generateTestData() {

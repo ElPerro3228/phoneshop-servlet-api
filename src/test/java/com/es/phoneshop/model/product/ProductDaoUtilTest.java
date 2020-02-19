@@ -21,17 +21,14 @@ public class ProductDaoUtilTest {
     }
 
     @Test
-    public void shouldReturnFalseWhenAnyMatchesWasNotFound() {
+    public void shouldReturnZeroWhenAnyMatchesWasNotFound() {
         Product product = new Product(1L, "sgs", "Samsung Galaxy S", new BigDecimal(100), Currency.getInstance("USD"), 100, "h", priceHistory);
-        SearchResultEntry s = new SearchResultEntry(product, 0);
-        assertFalse(ProductDaoUtil.countMatches(s, "r"));
+        assertEquals(0, ProductDaoUtil.countMatches(product, "r"));
     }
 
     @Test
     public void shouldSetCorrectNumberOfMatchesWhenWasFoundAnyCoincidences() {
         Product product = new Product(1L, "sgs", "Samsung Galaxy S", new BigDecimal(100), Currency.getInstance("USD"), 100, "h", priceHistory);
-        SearchResultEntry s = new SearchResultEntry(product, 0);
-        ProductDaoUtil.countMatches(s, "Samsung");
-        assertEquals(1, s.getCountOfMatches());
+        assertEquals(1, ProductDaoUtil.countMatches(product, "Samsung"));
     }
 }

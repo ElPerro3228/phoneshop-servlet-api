@@ -8,7 +8,7 @@
     Welcome to Expert-Soft training!
   </p>
   <form>
-    <input name="query" value="${param.query}">
+    <input name="query" value="<c:out value="${param.query}"/>">
     <button>Search</button>
   </form>
   <table>

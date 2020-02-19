@@ -1,10 +1,9 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.product.SortField;
 import com.es.phoneshop.model.product.SortOrder;
-import com.es.phoneshop.service.OrderService;
+import com.es.phoneshop.service.ProductDaoService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,9 +38,7 @@ public class ProductListPageServletTest {
     @Mock
     private RequestDispatcher requestDispatcher;
     @Mock
-    private ProductDao productDao;
-    @Mock
-    private OrderService orderService;
+    private ProductDaoService orderService;
     @Captor
     private ArgumentCaptor<List<Product>> productsArgumentCaptor;
 
@@ -53,11 +50,6 @@ public class ProductListPageServletTest {
     @Test
     public void testDoGet() throws ServletException, IOException {
         List<Product> products = Collections.emptyList();
-        SortField sortField = SortField.price;
-        SortOrder sortOrder = SortOrder.desc;
-
-        when(orderService.getSortOrder(any())).thenReturn(sortOrder);
-        when(orderService.getSortField(any())).thenReturn(sortField);
 
         servlet.doGet(request, response);
 

@@ -5,7 +5,7 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.product.SortField;
 import com.es.phoneshop.model.product.SortOrder;
-import com.es.phoneshop.service.OrderService;
+import com.es.phoneshop.service.ProductDaoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,13 +16,11 @@ import java.util.List;
 
 public class ProductListPageServlet extends HttpServlet {
 
-    private ProductDao productDao;
-    private OrderService orderService;
+    private ProductDaoService productDaoService;
 
     @Override
-    public void init() throws ServletException {
-        productDao = ArrayListProductDao.getInstance();
-        orderService = OrderService.getInstance();
+    public void init() {
+        productDaoService = ProductDaoService.getInstance();
     }
 
     @Override
