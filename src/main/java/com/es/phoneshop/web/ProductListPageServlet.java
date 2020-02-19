@@ -1,8 +1,6 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.product.SortField;
 import com.es.phoneshop.model.product.SortOrder;
 import com.es.phoneshop.service.ProductDaoService;
@@ -34,11 +32,18 @@ public class ProductListPageServlet extends HttpServlet {
     private List<Product> getProducts(String query, HttpServletRequest req) {
         String field = req.getParameter("field");
         String order = req.getParameter("order");
-        SortOrder sortOrder = orderService.getSortOrder(order);
-        SortField sortField = orderService.getSortField(field);
-        return orderService.createProductList(query, sortOrder, sortField);
+        SortOrder sortOrder = getSortOrder(order);
+        SortField sortField = getSortField(field);
+        return productDaoService.createProductList(query, sortOrder, sortField);
     }
 
+    public SortOrder getSortOrder(String order) {
+        return order == null ? null : order.equals("asc") ? SortOrder.asc : SortOrder.desc;
+    }
+
+    public SortField getSortField(String field) {
+        return field == null ? null : field.equals("price") ? SortField.price : SortField.description;
+    }
 }
 
 

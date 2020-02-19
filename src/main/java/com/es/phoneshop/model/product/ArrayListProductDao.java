@@ -32,17 +32,13 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public synchronized List<Product> findProducts(Predicate<? super Product> predicate, String q, SortField field, SortOrder order) {
+    public synchronized List<SearchResultEntry> findProducts(String q) {
         return products.stream()
                 .filter(p -> p.getPrice() != null)
                 .filter(p -> p.getPrice().doubleValue() > 0)
                 .filter(p -> p.getStock() > 0)
-                .filter(predicate)
-                .map(p -> new SearchResultEntry(p, 0))
-                .filter(s -> ProductDaoUtil.countMatches(s, q))
-                .sorted(Comparator.comparingInt(SearchResultEntry::getCountOfMatches).reversed())
-                .map(SearchResultEntry::getProduct)
-                .sorted(ProductDaoUtil.getComparator(field, order))
+                .map(p -> new SearchResultEntry(p, ProductDaoUtil.countMatches(p, q)))
+                .filter(s -> s.getCountOfMatches() > 0)
                 .collect(Collectors.toList());
     }
 

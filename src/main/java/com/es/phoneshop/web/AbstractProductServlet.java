@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public abstract class IdProcessingPageServlet extends HttpServlet {
+public class AbstractProductServlet extends HttpServlet {
 
     protected ProductDao productDao;
 
@@ -21,10 +21,7 @@ public abstract class IdProcessingPageServlet extends HttpServlet {
 
     protected Product processId(HttpServletRequest request) throws IOException {
         Long id = Long.valueOf(request.getPathInfo().substring(1));
-        Optional<Product> optionalProduct = productDao.getProduct(id);
-        if (!optionalProduct.isPresent()) {
-            throw new ProductNotFoundException();
-        }
-        return  optionalProduct.get();
+        return  productDao.getProduct(id).orElseThrow(ProductNotFoundException::new);
     }
+
 }

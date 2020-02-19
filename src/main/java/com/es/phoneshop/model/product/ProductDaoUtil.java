@@ -4,17 +4,15 @@ import java.util.Comparator;
 
 public final class ProductDaoUtil {
 
-    public static boolean countMatches(SearchResultEntry p, String query) {
-        boolean wasAnyMatches = false;
-        p.setCountOfMatches(0);
+    public static int countMatches(Product p, String query) {
+        int countMatches = 0;
         String[] splittedQuery = query.toLowerCase().split(" ");
         for (String s : splittedQuery) {
-            if (p.getProduct().getDescription().toLowerCase().contains(s)) {
-                wasAnyMatches = true;
-                p.setCountOfMatches(p.getCountOfMatches() + 1);
+            if (p.getDescription().toLowerCase().contains(s)) {
+                countMatches++;
             }
         }
-        return wasAnyMatches;
+        return countMatches;
     }
 
     public static Comparator<Product> getComparator(SortField field, SortOrder order) {
