@@ -17,9 +17,6 @@ public final class ProductDaoUtil {
 
     public static Comparator<Product> getComparator(SortField field, SortOrder order) {
         Comparator<Product> comparator;
-        if ((field == null) || (order == null)) {
-            return new DefaultComparator();
-        }
         if (field == SortField.price) {
             comparator = Comparator.comparing(Product::getPrice).reversed();
         } else {
@@ -29,12 +26,5 @@ public final class ProductDaoUtil {
             comparator = comparator.reversed();
         }
         return comparator;
-    }
-
-    private static class DefaultComparator implements Comparator<Product> {
-        @Override
-        public int compare(Product o1, Product o2) {
-            return 0;
-        }
     }
 }

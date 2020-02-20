@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public class AbstractProductServlet extends HttpServlet {
+public abstract class AbstractProductServlet extends HttpServlet {
 
     protected ProductDao productDao;
 
