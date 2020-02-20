@@ -8,6 +8,7 @@ import com.es.phoneshop.model.product.SortOrder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -25,12 +26,12 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductDaoServiceTest {
+public class DefaultProductServiceTest {
 
     @Mock
     private ProductDao productDao;
-
-    private ProductService productService;
+    @InjectMocks
+    private ProductService defaultProductService = DefaultProductService.getInstance();
 
     private Currency usd;
     private Map<Date, BigDecimal> priceHistory;
@@ -39,8 +40,6 @@ public class ProductDaoServiceTest {
     public void setup() {
         usd = Currency.getInstance("USD");
         priceHistory = new TreeMap<>();
-        productService = ProductService.getInstance();
-        productService.setProductDao(productDao);
     }
 
     @Test
@@ -53,7 +52,7 @@ public class ProductDaoServiceTest {
 
         when(productDao.findProducts(eq("A B"))).thenReturn(entries);
 
-        List<Product> products = productService.createProductList("A B", SortOrder.asc, SortField.price);
+        List<Product> products = defaultProductService.createProductList("A B", SortOrder.asc, SortField.price);
 
         assertFalse(products.isEmpty());
         assertEquals(2L, (long)products.get(0).getId());
@@ -69,7 +68,7 @@ public class ProductDaoServiceTest {
 
         when(productDao.findProducts(eq("A B"))).thenReturn(entries);
 
-        List<Product> products = productService.createProductList("A B", null, null);
+        List<Product> products = defaultProductService.createProductList("A B", null, null);
 
         assertFalse(products.isEmpty());
         assertEquals(2L, (long)products.get(0).getId());

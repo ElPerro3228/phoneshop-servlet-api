@@ -1,8 +1,10 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.service.ProductService;
 
+import com.es.phoneshop.model.recentwatched.RecentWatchedProducts;
+import com.es.phoneshop.service.ProductService;
+import com.es.phoneshop.service.RecentWatchedProductService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +38,9 @@ public class ProductListPageServletTest {
     @Mock
     private RequestDispatcher requestDispatcher;
     @Mock
-    private ProductService orderService;
+    private ProductService productService;
+    @Mock
+    private RecentWatchedProductService recentWatchedProductService;
     @Captor
     private ArgumentCaptor<List<Product>> productsArgumentCaptor;
 

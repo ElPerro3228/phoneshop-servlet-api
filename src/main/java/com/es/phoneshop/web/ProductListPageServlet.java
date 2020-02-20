@@ -3,7 +3,9 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.SortField;
 import com.es.phoneshop.model.product.SortOrder;
+import com.es.phoneshop.service.DefaultProductService;
 import com.es.phoneshop.service.ProductService;
+import com.es.phoneshop.service.RecentWatchedProductService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,11 +16,11 @@ import java.util.List;
 
 public class ProductListPageServlet extends HttpServlet {
 
-    private ProductService productService;
+    private ProductService defaultProductService;
 
     @Override
     public void init() {
-        productService = ProductService.getInstance();
+        defaultProductService = DefaultProductService.getInstance();
     }
 
     @Override
@@ -34,7 +36,7 @@ public class ProductListPageServlet extends HttpServlet {
         String order = req.getParameter("order");
         SortOrder sortOrder = getSortOrder(order);
         SortField sortField = getSortField(field);
-        return productService.createProductList(query, sortOrder, sortField);
+        return defaultProductService.createProductList(query, sortOrder, sortField);
     }
 
     public SortOrder getSortOrder(String order) {

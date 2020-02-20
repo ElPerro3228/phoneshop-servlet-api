@@ -14,6 +14,7 @@ public class ProductPriceHistoryServlet extends AbstractProductServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             Product product = processId(request);
+            addProductToRecentWatched(product, request);
             request.setAttribute("product", product);
             request.getRequestDispatcher("/WEB-INF/pages/priceHistory.jsp").forward(request, response);
         } catch (ProductNotFoundException e) {
