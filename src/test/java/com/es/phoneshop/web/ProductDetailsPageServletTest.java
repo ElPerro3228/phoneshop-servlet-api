@@ -30,8 +30,6 @@ public class ProductDetailsPageServletTest {
     private static final String PATH_INFO = "/1";
 
     @Captor
-    private ArgumentCaptor<Long> longArgumentCaptor;
-    @Captor
     private ArgumentCaptor<Product> productArgumentCaptor;
 
     @InjectMocks
