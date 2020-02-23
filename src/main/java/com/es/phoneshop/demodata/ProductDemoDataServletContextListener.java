@@ -1,8 +1,11 @@
-package com.es.phoneshop.model.product;
+package com.es.phoneshop.demodata;
 
-import org.junit.Before;
-import org.junit.Test;
+import com.es.phoneshop.model.product.ArrayListProductDao;
+import com.es.phoneshop.model.product.Product;
+import com.es.phoneshop.model.product.ProductDao;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;
@@ -10,72 +13,17 @@ import java.util.GregorianCalendar;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static org.junit.Assert.*;
+public class ProductDemoDataServletContextListener implements ServletContextListener {
 
-
-public class ArrayListProductDaoTest
-{
-
-    private ProductDao productDao;
-    private Currency usd;
-    private Map<Date, BigDecimal> priceHistory;
-
-    @Before
-    public void setup() {
-        productDao = ArrayListProductDao.getInstance();
-        usd = Currency.getInstance("USD");
-        priceHistory = new TreeMap<>();
-        generateTestData();
+    @Override
+    public void contextInitialized(ServletContextEvent servletContextEvent) {
+        generateSampleData();
     }
 
-    @Test
-    public void shouldNotFindAnyProductWhenThereAreNoAnyMatches() {
-        assertTrue(productDao.findProducts("w").isEmpty());
-    }
-
-    @Test
-    public void shouldFindProductsWhenThereAreMatches() {
-        assertFalse(productDao.findProducts("Apple").isEmpty());
-    }
-
-    @Test
-    public void shouldChangeProductStateWhenProductIsInArrayList() {
-        Product product = new Product(1L, "sgs", "S", new BigDecimal(100), usd, 100, "", priceHistory);
-        productDao.save(product);
-        assertSame("S", productDao.getProduct(1L).get().getDescription());
-    }
-
-
-    @Test
-    public void shouldAddProductWithNoExistingId() {
-        int startSize = productDao.findProducts("").size();
-        productDao.save(new Product (100L, "", "Samsung ", new BigDecimal(1), usd, 1, "", priceHistory));
-        int endSize = productDao.findProducts("").size();
-        assertTrue(startSize < endSize);
-    }
-
-    @Test
-    public void shouldGetProductWithExistingId() {
-        Product p = new Product (1L, "", "Samsung ", new BigDecimal(1), usd, 1, "", priceHistory);
-        assertEquals(p.getId(), productDao.getProduct(1L).get().getId());
-    }
-
-    @Test
-    public void shouldDeleteProductWithExistingId() {
-        int startSize = productDao.findProducts("").size();
-        productDao.delete(8L);
-        int endSize = productDao.findProducts("").size();
-        assertTrue(startSize > endSize);
-    }
-
-    @Test
-    public void shouldDeleteCorrectProductWithExistingId() {
-        productDao.delete(4L);
-        assertFalse(productDao.getProduct(4L).isPresent());
-    }
-
-    private void generateTestData() {
+    public void generateSampleData() {
+        ProductDao productDao = ArrayListProductDao.getInstance();
         Currency usd = Currency.getInstance("USD");
+        Map<Date ,BigDecimal> priceHistory = new TreeMap<>();
         priceHistory.put(new GregorianCalendar(2001, 1, 1).getTime(), new BigDecimal(100));
         productDao.save(new Product(1L, "sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg", priceHistory));
         productDao.save(new Product(2L, "sgs2", "Samsung Galaxy S II", new BigDecimal(200), usd, 0, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S%20II.jpg", priceHistory));
@@ -92,4 +40,8 @@ public class ArrayListProductDaoTest
         productDao.save(new Product(13L, "simsxg75", "Siemens SXG75", new BigDecimal(150), usd, 40, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Siemens/Siemens%20SXG75.jpg", priceHistory));
     }
 
+    @Override
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+
+    }
 }

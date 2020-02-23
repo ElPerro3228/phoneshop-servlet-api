@@ -1,8 +1,7 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.service.ProductService;
-
+import com.es.phoneshop.model.product.ProductDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,19 +15,22 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductListPageServletTest {
+public class ProductPriceHistoryServletTest {
 
+    private static final String PATH_INFO = "/1";
     @InjectMocks
-    private ProductListPageServlet servlet;
+    private ProductPriceHistoryServlet servlet;
     @Mock
     private HttpServletRequest request;
     @Mock
@@ -36,23 +38,26 @@ public class ProductListPageServletTest {
     @Mock
     private RequestDispatcher requestDispatcher;
     @Mock
-    private ProductService orderService;
+    private ProductDao productDao;
     @Captor
-    private ArgumentCaptor<List<Product>> productsArgumentCaptor;
+    private ArgumentCaptor<Product> productArgumentCaptor;
 
     @Before
-    public void setup(){
+    public void setup() {
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
     }
 
     @Test
     public void testDoGet() throws ServletException, IOException {
-        List<Product> products = Collections.emptyList();
+        Product product = new Product();
+
+        when(request.getPathInfo()).thenReturn(PATH_INFO);
+        when(productDao.getProduct(1L)).thenReturn(Optional.of(product));
 
         servlet.doGet(request, response);
 
-        verify(request).setAttribute(eq("products"), productsArgumentCaptor.capture());
-        assertEquals(products, productsArgumentCaptor.getValue());
+        verify(request).setAttribute(eq("product"), productArgumentCaptor.capture());
+        assertEquals(product, productArgumentCaptor.getValue());
         verify(requestDispatcher).forward(request, response);
     }
 }
