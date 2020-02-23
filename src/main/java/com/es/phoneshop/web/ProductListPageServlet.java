@@ -3,7 +3,7 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.SortField;
 import com.es.phoneshop.model.product.SortOrder;
-import com.es.phoneshop.service.ProductDaoService;
+import com.es.phoneshop.service.ProductService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,11 +14,11 @@ import java.util.List;
 
 public class ProductListPageServlet extends HttpServlet {
 
-    private ProductDaoService productDaoService;
+    private ProductService productService;
 
     @Override
     public void init() {
-        productDaoService = ProductDaoService.getInstance();
+        productService = ProductService.getInstance();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ProductListPageServlet extends HttpServlet {
         String order = req.getParameter("order");
         SortOrder sortOrder = getSortOrder(order);
         SortField sortField = getSortField(field);
-        return productDaoService.createProductList(query, sortOrder, sortField);
+        return productService.createProductList(query, sortOrder, sortField);
     }
 
     public SortOrder getSortOrder(String order) {

@@ -1,9 +1,7 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.product.SortField;
-import com.es.phoneshop.model.product.SortOrder;
-import com.es.phoneshop.service.ProductDaoService;
+import com.es.phoneshop.service.ProductService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +36,7 @@ public class ProductListPageServletTest {
     @Mock
     private RequestDispatcher requestDispatcher;
     @Mock
-    private ProductDaoService orderService;
+    private ProductService orderService;
     @Captor
     private ArgumentCaptor<List<Product>> productsArgumentCaptor;
 

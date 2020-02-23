@@ -30,7 +30,7 @@ public class ProductDaoServiceTest {
     @Mock
     private ProductDao productDao;
 
-    private ProductDaoService productDaoService;
+    private ProductService productService;
 
     private Currency usd;
     private Map<Date, BigDecimal> priceHistory;
@@ -39,8 +39,8 @@ public class ProductDaoServiceTest {
     public void setup() {
         usd = Currency.getInstance("USD");
         priceHistory = new TreeMap<>();
-        productDaoService = ProductDaoService.getInstance();
-        productDaoService.setProductDao(productDao);
+        productService = ProductService.getInstance();
+        productService.setProductDao(productDao);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class ProductDaoServiceTest {
 
         when(productDao.findProducts(eq("A B"))).thenReturn(entries);
 
-        List<Product> products = productDaoService.createProductList("A B", SortOrder.asc, SortField.price);
+        List<Product> products = productService.createProductList("A B", SortOrder.asc, SortField.price);
 
         assertFalse(products.isEmpty());
         assertEquals(2L, (long)products.get(0).getId());
@@ -69,7 +69,7 @@ public class ProductDaoServiceTest {
 
         when(productDao.findProducts(eq("A B"))).thenReturn(entries);
 
-        List<Product> products = productDaoService.createProductList("A B", null, null);
+        List<Product> products = productService.createProductList("A B", null, null);
 
         assertFalse(products.isEmpty());
         assertEquals(2L, (long)products.get(0).getId());

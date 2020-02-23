@@ -12,19 +12,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProductDaoService {
+public class ProductService {
 
-    private static ProductDaoService instance;
+    private static ProductService instance;
 
     private ProductDao productDao;
 
-    private ProductDaoService() {
+    private ProductService() {
         productDao = ArrayListProductDao.getInstance();
     }
 
-    public static ProductDaoService getInstance() {
+    public static ProductService getInstance() {
         if (instance == null) {
-            instance = new ProductDaoService();
+            instance = new ProductService();
         }
         return instance;
     }
