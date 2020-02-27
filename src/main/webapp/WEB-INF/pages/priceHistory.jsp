@@ -7,6 +7,7 @@
     <p>
         Welcome to Expert-Soft training!
     </p>
+    <div class="container">
     <p><c:out value="${product.description}"/></p>
     <table>
         <thead>
@@ -24,4 +25,5 @@
             </tr>
         </c:forEach>
     </table>
+    </div>
 </tags:master>

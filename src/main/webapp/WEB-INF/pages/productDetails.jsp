@@ -7,52 +7,75 @@
     <p>
         Welcome to Expert-Soft training!
     </p>
-    <c:out value="${cart}"/>
+    <div id="cart-content"><c:out value="${cart}"/></div>
     <tags:error error="${error}" message="There is error"/>
-    <c:if test="${not empty param.success}">
-        <p style="color: green">
-            <c:out value="Added to cart successfully"/>
-        </p>
-    </c:if>
-    <table>
-        <tr>
-            <td>
-                Description
-            </td>
-            <td>
-                <c:out value="${product.description}"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Price
-            </td>
-            <td>
-                <a href="${pageContext.servletContext.contextPath}/products/priceHistory/${product.id}"><c:out value="${product.price}"/></a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Stock
-            </td>
-            <td>
-                <c:out value="${product.stock}"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Image
-            </td>
-            <td>
-                <img src = "${product.imageUrl}">
-            </td>
-        </tr>
-    </table>
-    <form method="post" action="${product.id}">
-        <p>
-            <input name="quantity" value="${not empty param.quantity ? param.quantity : 1}" class="price"/>
-            <button>Add to cart</button>
-        </p>
-    </form>
+    <div id = "success-message" style="color: green"></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col l4 m4 s12">
+                <div class="card">
+                    <div class="card-image">
+                        <img style="max-width: 256px;" src="${product.imageUrl}">
+                        <span class="card-title-custom teal lighten-3"><strong><c:out value="${product.description}"/></strong></span>
+                    </div>
+                    <div class="card-content">
+                        <p><a href="${pageContext.servletContext.contextPath}/products/priceHistory/${product.id}"><c:out value="${product.price}"/></a></p>
+                        <p>Stock: <c:out value="${product.stock}"/></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col col l4 m4 s4">
+                <input id="quantity" value="" class="price"/>
+            </div>
+            <div class="col l4 m4 s4">
+                <button id="add-to-cart" class="btn waves-effect waves-light" type="submit" name="action">Add to cart
+                    <i class="material-icons right">add</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <tags:error error="${error}" message="${error}"/>
+    <div class="container">
+        <div class="row">
+        <h5 class="start" style="color: #80cbc4;">Reviews</h5>
+        <img style="max-width: 64px" src="${pageContext.servletContext.contextPath}/images/star.png"/>
+        <h5 style="color: #80cbc4;">${product.averageRate}</h5>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="comments-container">
+            <c:forEach var="comment" items="${product.comments}">
+                <tags:comments name="${comment.authorName}" comment="${comment.commentText}" rate="${comment.rate.value}"/>
+            </c:forEach>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5 class="start" style="color: #80cbc4;">Send yours</h5>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <form>
+                    <input id="name" value="Name">
+                    <textarea id="comment" class="materialize-textarea"></textarea>
+                    <tags:stars/>
+                </form>
+            </div>
+            <div class="col s12">
+                <button id="send-comment" class="btn waves-effect waves-light" type="submit" name="action">Send
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </div>
+    </div>
 </tags:master>

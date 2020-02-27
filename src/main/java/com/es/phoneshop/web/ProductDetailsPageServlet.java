@@ -30,10 +30,12 @@ public class ProductDetailsPageServlet extends AbstractProductServlet {
         try {
             quantity = getQuantity(request, quantity);
             addProductToCart(request, cart, quantity);
-            response.sendRedirect(request.getRequestURI() + "?success=true");
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(cartService.getCart(request).toString());
         } catch (ProductAddToCartException e) {
-            request.setAttribute("error", e.getMessage());
-            processRequest(request, response);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write(e.getMessage());
         }
     }
 

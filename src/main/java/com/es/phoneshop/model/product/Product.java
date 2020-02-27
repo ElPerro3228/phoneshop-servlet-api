@@ -1,8 +1,11 @@
 package com.es.phoneshop.model.product;
 
+import com.es.phoneshop.model.comment.Comment;
+
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class Product {
@@ -17,6 +20,8 @@ public class Product {
     private String imageUrl;
 
     private Map<Date, BigDecimal> priceHistory;
+    private List<Comment> comments;
+    private double averageRate;
 
     public Product() {
     }
@@ -94,5 +99,21 @@ public class Product {
 
     public void setPriceHistory(Map<Date, BigDecimal> priceHistory) {
         this.priceHistory = priceHistory;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public double getAverageRate() {
+        return averageRate;
+    }
+
+    public void setAverageRate(double averageRate) {
+        this.averageRate = averageRate;
     }
 }
