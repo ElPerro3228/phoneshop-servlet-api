@@ -7,6 +7,13 @@
     <p>
         Welcome to Expert-Soft training!
     </p>
+    <c:out value="${cart}"/>
+    <tags:error error="${error}" message="There is error"/>
+    <c:if test="${not empty param.success}">
+        <p style="color: green">
+            <c:out value="Added to cart successfully"/>
+        </p>
+    </c:if>
     <table>
         <tr>
             <td>
@@ -41,4 +48,11 @@
             </td>
         </tr>
     </table>
+    <form method="post" action="${product.id}">
+        <p>
+            <input name="quantity" value="${not empty param.quantity ? param.quantity : 1}" class="price"/>
+            <button>Add to cart</button>
+        </p>
+    </form>
+    <tags:error error="${error}" message="${error}"/>
 </tags:master>
