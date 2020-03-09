@@ -6,7 +6,6 @@ $(document).on("click", "#add-to-cart", function () {
             quantity: $("#quantity").val()
         },
         success: function (responseText) {
-            $("#cart-content").text(responseText);
             $("#success-message").text("Added to cart successfully");
         },
         error: function (request, status, error) {

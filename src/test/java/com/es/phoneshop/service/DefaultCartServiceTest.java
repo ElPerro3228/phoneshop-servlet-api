@@ -1,6 +1,10 @@
 package com.es.phoneshop.service;
 
+import com.es.phoneshop.exceptions.NegativeNumberException;
 import com.es.phoneshop.model.cart.Cart;
+import com.es.phoneshop.model.cart.CartItem;
+import com.es.phoneshop.exceptions.CartItemNotfoundException;
+import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import org.junit.Before;
@@ -15,11 +19,12 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,6 +33,7 @@ import static org.mockito.Mockito.when;
 public class DefaultCartServiceTest {
 
     private static final String CART_ATTRIBUTE = "cart_" + DefaultCartService.class;
+    private static final long PRODUCT_ID = 1L;
 
     @Mock
     private ProductDao productDao;
@@ -64,6 +70,11 @@ public class DefaultCartServiceTest {
         assertTrue(endQuantity > startQuantity);
     }
 
+    @Test(expected = NegativeNumberException.class)
+    public void AddMethodShouldThrowNegativeNumberException() {
+        cartService.update(new Cart(), PRODUCT_ID, -1);
+    }
+
     @Test
     public void testGetCard() {
         when(request.getSession()).thenReturn(session);
@@ -72,5 +83,78 @@ public class DefaultCartServiceTest {
         cartService.getCart(request);
 
         verify(session).setAttribute(anyString(), any());
+    }
+
+    @Test
+    public void testUpdate() {
+        Cart cart = new Cart();
+        Product product = new Product();
+        product.setStock(100);
+        product.setId(PRODUCT_ID);
+        CartItem item = new CartItem(product, 1);
+        cart.getCartItems().add(item);
+
+        cartService.update(cart, PRODUCT_ID, 2);
+
+        assertEquals(2, item.getQuantity());
+    }
+
+    @Test(expected = CartItemNotfoundException.class)
+    public void shouldThrowCartItemNotfoundException() {
+        Cart cart = new Cart();
+        cartService.update(cart, PRODUCT_ID, 2);
+    }
+
+    @Test(expected = OutOfStockException.class)
+    public void shouldThrowOutOfStockExceptionWhenQuantityIsBiggerThanStock() {
+        Cart cart = new Cart();
+        Product product = new Product();
+        product.setStock(1);
+        product.setId(PRODUCT_ID);
+        CartItem item = new CartItem(product, 1);
+        cart.getCartItems().add(item);
+
+        cartService.update(cart, PRODUCT_ID, 100);
+    }
+
+    @Test(expected = NegativeNumberException.class)
+    public void UpdateMethodShouldThrowNegativeNumberException() {
+        cartService.update(new Cart(), PRODUCT_ID, -100);
+    }
+
+    @Test
+    public void testDelete() {
+        Cart cart = new Cart();
+        Product product = new Product();
+        product.setId(PRODUCT_ID);
+        cart.getCartItems().add(new CartItem(product, 1));
+
+        cartService.delete(cart, PRODUCT_ID);
+
+        assertEquals(0, cart.getCartItems().size());
+    }
+
+    @Test
+    public void testCalculatePrice() {
+        Cart cart = new Cart();
+        Product product = new Product();
+        product.setPrice(new BigDecimal(100));
+        cart.getCartItems().add(new CartItem(product, 5));
+        cart.getCartItems().add(new CartItem(product, 5));
+
+        cartService.calculateTotalPrice(cart);
+
+        assertEquals(1000, cart.getTotal().intValue());
+    }
+
+    @Test
+    public void testGetTotalPrice() {
+        Cart cart = new Cart();
+        cart.setTotal(new BigDecimal(100));
+        when(request.getLocale()).thenReturn(Locale.ROOT);
+
+        String price = cartService.getTotalPrice(request, cart);
+
+        assertEquals("USD 100.00", price);
     }
 }

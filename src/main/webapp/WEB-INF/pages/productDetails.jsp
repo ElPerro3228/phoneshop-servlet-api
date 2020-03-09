@@ -7,7 +7,9 @@
     <p>
         Welcome to Expert-Soft training!
     </p>
-    <div id="cart-content"><c:out value="${cart}"/></div>
+    <div class="container">
+        <h5 class="start" style="color: #80cbc4;">Products in cart: <c:out value="${miniCart}"/> </h5>
+    </div>
     <tags:error error="${error}" message="There is error"/>
     <div id = "success-message" style="color: green"></div>
 
@@ -20,7 +22,7 @@
                         <span class="card-title-custom teal lighten-3"><strong><c:out value="${product.description}"/></strong></span>
                     </div>
                     <div class="card-content">
-                        <p><a href="${pageContext.servletContext.contextPath}/products/priceHistory/${product.id}"><c:out value="${product.price}"/></a></p>
+                        <p><a href="${pageContext.servletContext.contextPath}/products/priceHistory/${product.id}"><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/></a></p>
                         <p>Stock: <c:out value="${product.stock}"/></p>
                     </div>
                 </div>

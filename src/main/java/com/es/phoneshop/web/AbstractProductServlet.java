@@ -3,7 +3,7 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
-import com.es.phoneshop.model.product.ProductNotFoundException;
+import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.model.recentwatched.RecentWatchedProducts;
 import com.es.phoneshop.service.CartService;
 import com.es.phoneshop.service.DefaultCartService;
@@ -12,7 +12,6 @@ import com.es.phoneshop.service.RecentWatchedProductService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public abstract class AbstractProductServlet extends HttpServlet {

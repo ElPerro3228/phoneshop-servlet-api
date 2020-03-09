@@ -1,4 +1,4 @@
-package com.es.phoneshop.model.comment;
+package com.es.phoneshop.exceptions;
 
 public class RateCalculationException extends RuntimeException {
     public RateCalculationException() {
