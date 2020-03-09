@@ -7,36 +7,44 @@
   <p>
     Welcome to Expert-Soft training!
   </p>
-  <form>
-    <input name="query" value="<c:out value="${param.query}"/>">
-    <button>Search</button>
-  </form>
-  <table>
-    <thead>
-      <tr>
-        <td>Image</td>
-        <td>
-          Description
-          <tags:sortLink field="description" order="asc"/>
-          <tags:sortLink field="description" order="desc"/>
-        </td>
-        <td class="price">
-          Price
-          <tags:sortLink field="price" order="asc"/>
-          <tags:sortLink field="price" order="desc"/>
-        </td>
-      </tr>
-    </thead>
-    <c:forEach var="product" items="${products}">
-      <tr>
-        <td>
-          <img class="product-tile" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
-        </td>
-        <td><a href = "products/${product.id}"><c:out value="${product.description}"/></a></td>
-        <td class="price">
-          <a href="products/priceHistory/${product.id}"><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/></a>
-        </td>
-      </tr>
-    </c:forEach>
-  </table>
+  <div class="container">
+      <form>
+        <div class="row">
+          <div class="col l10 m10 s12">
+            <input name="query" value="<c:out value="${param.query}"/>"/>
+          </div>
+          <div class="col l2 m2 s1">
+            <button class="btn waves-effect waves-light pulse"><i class="small material-icons">search</i></button>
+          </div>
+        </div>
+      </form>
+
+    <div class="row">
+      <tags:sortLink field="description" order="asc"/>
+      <tags:sortLink field="description" order="desc"/>
+      <tags:sortLink field="price" order="asc"/>
+      <tags:sortLink field="price" order="desc"/>
+    </div>
+
+    <div class="row">
+      <c:forEach var="product" items="${products}">
+        <div class="col l4 m6 s12">
+          <div class="card">
+            <div class="card-image">
+              <img style="max-width: 256px;" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${product.imageUrl}">
+              <span class="card-title-custom teal lighten-3" style="color: white"><strong><c:out value="${product.description}"/></strong></span>
+            </div>
+            <div class="card-content">
+              <p>
+                <a href="products/priceHistory/${product.id}"><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/></a>
+              </p>
+            </div>
+            <div class="card-action">
+              <a href = "products/${product.id}">More</a>
+            </div>
+          </div>
+        </div>
+      </c:forEach>
+    </div>
+  </div>
 </tags:master>

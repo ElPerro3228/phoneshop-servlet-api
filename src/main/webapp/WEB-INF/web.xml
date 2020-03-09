@@ -21,6 +21,10 @@
     <servlet-name>priceHistory</servlet-name>
     <servlet-class>com.es.phoneshop.web.ProductPriceHistoryServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>commentServlet</servlet-name>
+    <servlet-class>com.es.phoneshop.web.ProductCommentServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>productList</servlet-name>
@@ -33,6 +37,10 @@
   <servlet-mapping>
     <servlet-name>priceHistory</servlet-name>
     <url-pattern>/products/priceHistory/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>commentServlet</servlet-name>
+    <url-pattern>/comment</url-pattern>
   </servlet-mapping>
 
   <filter>

@@ -23,6 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -55,6 +58,8 @@ public class ProductDetailsPageServletTest {
     private CartService cartService;
     @Mock
     private RecentWatchedProductService recentWatchedProductService;
+    @Mock
+    private PrintWriter writer;
 
     @Before
     public void setup() {
@@ -88,22 +93,26 @@ public class ProductDetailsPageServletTest {
     public void testDoPost() throws IOException, ServletException {
         when(request.getParameter("quantity")).thenReturn("1");
         when(request.getLocale()).thenReturn(Locale.ROOT);
-        when(request.getRequestURI()).thenReturn("/phoneshop-servlet-api/products/3");
+        when(response.getWriter()).thenReturn(writer);
+        doNothing().when(writer).write(anyString());
+        when(cartService.getCart(request)).thenReturn(new Cart());
 
         servlet.doPost(request, response);
 
-        verify(response).sendRedirect(stringArgumentCaptor.capture());
-        assertEquals("/phoneshop-servlet-api/products/3?success=true", stringArgumentCaptor.getValue());
+        verify(writer).write(stringArgumentCaptor.capture());
+        assertEquals("Cart[[]]", stringArgumentCaptor.getValue());
     }
 
     @Test
     public void shouldCatchParseExceptionWhenQuantityIsNotNumber() throws ServletException, IOException {
         when(request.getParameter("quantity")).thenReturn("e");
         when(request.getLocale()).thenReturn(Locale.ROOT);
+        when(response.getWriter()).thenReturn(writer);
+        doNothing().when(writer).write(anyString());
 
         servlet.doPost(request, response);
 
-        verify(request).setAttribute(eq("error"), stringArgumentCaptor.capture());
+        verify(writer).write(stringArgumentCaptor.capture());
         assertEquals("Not a number", stringArgumentCaptor.getValue());
     }
 
@@ -115,13 +124,14 @@ public class ProductDetailsPageServletTest {
 
         when(request.getParameter("quantity")).thenReturn("1000");
         when(request.getLocale()).thenReturn(Locale.ROOT);
-        when(productDao.getProduct(1L)).thenReturn(Optional.of(product));
         when(cartService.getCart(request)).thenReturn(cart);
         doThrow(new OutOfStockException(product, 100)).when(cartService).add(cart, 1L, 1000);
+        when(response.getWriter()).thenReturn(writer);
+        doNothing().when(writer).write(anyString());
 
         servlet.doPost(request, response);
 
-        verify(request).setAttribute(eq("error"), stringArgumentCaptor.capture());
+        verify(writer).write(stringArgumentCaptor.capture());
         assertEquals("Not enough stock, available " + product.getStock(), stringArgumentCaptor.getValue());
     }
 
