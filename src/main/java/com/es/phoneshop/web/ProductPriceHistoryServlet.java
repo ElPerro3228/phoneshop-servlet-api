@@ -1,7 +1,7 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.product.ProductNotFoundException;
+import com.es.phoneshop.exceptions.ProductNotFoundException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

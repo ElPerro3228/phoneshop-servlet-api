@@ -8,6 +8,9 @@
     Welcome to Expert-Soft training!
   </p>
   <div class="container">
+    <h5 class="start" style="color: #80cbc4;">Products in cart: <c:out value="${miniCart}"/> </h5>
+  </div>
+  <div class="container">
       <form>
         <div class="row">
           <div class="col l10 m10 s12">

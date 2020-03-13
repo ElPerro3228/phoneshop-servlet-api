@@ -25,6 +25,10 @@
     <servlet-name>commentServlet</servlet-name>
     <servlet-class>com.es.phoneshop.web.ProductCommentServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>cartServlet</servlet-name>
+    <servlet-class>com.es.phoneshop.web.CartPageServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>productList</servlet-name>
@@ -42,15 +46,28 @@
     <servlet-name>commentServlet</servlet-name>
     <url-pattern>/comment</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>cartServlet</servlet-name>
+    <url-pattern>/cart</url-pattern>
+  </servlet-mapping>
 
   <filter>
     <filter-name>RecentWatchedProductFilter</filter-name>
     <filter-class>com.es.phoneshop.filter.RecentWatchedProductsFilter</filter-class>
   </filter>
+  <filter>
+    <filter-name>MiniCartFilter</filter-name>
+    <filter-class>com.es.phoneshop.filter.MiniCartFilter</filter-class>
+  </filter>
 
   <filter-mapping>
     <filter-name>RecentWatchedProductFilter</filter-name>
     <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>MiniCartFilter</filter-name>
+    <url-pattern>/products</url-pattern>
+    <url-pattern>/products/*</url-pattern>
   </filter-mapping>
   
   <error-page>

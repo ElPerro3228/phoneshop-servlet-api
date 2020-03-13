@@ -1,7 +1,7 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.model.comment.RateCalculationException;
-import com.es.phoneshop.model.product.ProductNotFoundException;
+import com.es.phoneshop.exceptions.RateCalculationException;
+import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.service.CommentService;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,8 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;

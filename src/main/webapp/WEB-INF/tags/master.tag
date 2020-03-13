@@ -12,10 +12,19 @@
 </head>
 <body class="product-list">
   <header>
-    <a href="${pageContext.servletContext.contextPath}">
-      <img style="max-width: 64px" src="${pageContext.servletContext.contextPath}/images/logo.svg"/>
-      PhoneShop
-    </a>
+    <div class="row">
+      <div class="col s11">
+      <a href="${pageContext.servletContext.contextPath}">
+        <img style="max-width: 64px" src="${pageContext.servletContext.contextPath}/images/logo.svg"/>
+        PhoneShop
+      </a>
+      </div>
+      <div class="col s1">
+        <a href="${pageContext.servletContext.contextPath}/cart" class="waves-effect waves-light btn">
+          <i class="material-icons">shopping_cart</i>
+        </a>
+      </div>
+    </div>
   </header>
   <main>
     <jsp:doBody/>
@@ -33,6 +42,8 @@
   </script>
 
   <script src = "${pageContext.servletContext.contextPath}/scripts/sendComment.js">
+  </script>
+  <script src = "${pageContext.servletContext.contextPath}/scripts/cartScripts.js">
   </script>
 </body>
 </html>

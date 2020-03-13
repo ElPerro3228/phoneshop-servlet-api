@@ -1,7 +1,7 @@
 package com.es.phoneshop.web;
 
-import com.es.phoneshop.model.comment.RateCalculationException;
-import com.es.phoneshop.model.product.ProductNotFoundException;
+import com.es.phoneshop.exceptions.RateCalculationException;
+import com.es.phoneshop.exceptions.ProductNotFoundException;
 import com.es.phoneshop.service.CommentService;
 import com.es.phoneshop.service.DefaultCommentService;
 

@@ -1,4 +1,4 @@
-package com.es.phoneshop.web;
+package com.es.phoneshop.exceptions;
 
 public class ProductAddToCartException extends RuntimeException{
 

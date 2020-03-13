@@ -1,9 +1,11 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.exceptions.NegativeNumberException;
+import com.es.phoneshop.exceptions.ProductAddToCartException;
 import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.model.cart.OutOfStockException;
+import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.model.product.Product;
-import com.es.phoneshop.model.product.ProductNotFoundException;
+import com.es.phoneshop.exceptions.ProductNotFoundException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +30,7 @@ public class ProductDetailsPageServlet extends AbstractProductServlet {
         Cart cart = cartService.getCart(request);
         int quantity = 0;
         try {
-            quantity = getQuantity(request, quantity);
+            quantity = getQuantity(request);
             addProductToCart(request, cart, quantity);
             response.setContentType("text/plain");
             response.setCharacterEncoding("UTF-8");
@@ -36,6 +38,9 @@ public class ProductDetailsPageServlet extends AbstractProductServlet {
         } catch (ProductAddToCartException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write(e.getMessage());
+        } catch (ParseException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Not a number");
         }
     }
 
@@ -45,17 +50,14 @@ public class ProductDetailsPageServlet extends AbstractProductServlet {
             cartService.add(cart, id, quantity);
         } catch (OutOfStockException e) {
             throw new ProductAddToCartException("Not enough stock, available " + e.getProduct().getStock());
+        } catch (NegativeNumberException e) {
+            throw new ProductAddToCartException(e.getMessage());
         }
     }
 
-    private int getQuantity(HttpServletRequest request, int quantity) {
-        try {
-            NumberFormat numberFormat = NumberFormat.getInstance(request.getLocale());
-            quantity = numberFormat.parse(request.getParameter("quantity")).intValue();
-        } catch (ParseException e) {
-            throw new ProductAddToCartException("Not a number");
-        }
-        return quantity;
+    private int getQuantity(HttpServletRequest request) throws ParseException {
+        NumberFormat numberFormat = NumberFormat.getInstance(request.getLocale());
+        return numberFormat.parse(request.getParameter("quantity")).intValue();
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

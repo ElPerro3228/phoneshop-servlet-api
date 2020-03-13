@@ -1,7 +1,7 @@
 package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.cart.Cart;
-import com.es.phoneshop.model.cart.OutOfStockException;
+import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.recentwatched.RecentWatchedProducts;
@@ -23,8 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.Optional;

@@ -2,10 +2,10 @@ package com.es.phoneshop.service;
 
 import com.es.phoneshop.model.comment.Comment;
 import com.es.phoneshop.model.comment.Rate;
-import com.es.phoneshop.model.comment.RateCalculationException;
+import com.es.phoneshop.exceptions.RateCalculationException;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
-import com.es.phoneshop.model.product.ProductNotFoundException;
+import com.es.phoneshop.exceptions.ProductNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
