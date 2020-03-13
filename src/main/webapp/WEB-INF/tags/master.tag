@@ -45,5 +45,7 @@
   </script>
   <script src = "${pageContext.servletContext.contextPath}/scripts/cartScripts.js">
   </script>
+  <script src = "${pageContext.servletContext.contextPath}/scripts/checkOutScripts.js">
+  </script>
 </body>
 </html>

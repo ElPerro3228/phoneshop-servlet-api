@@ -37,7 +37,7 @@ public class ArrayListProductDao implements ProductDao {
                 .filter(p -> p.getPrice() != null)
                 .filter(p -> p.getPrice().doubleValue() > 0)
                 .filter(p -> p.getStock() > 0)
-                .map(p -> new SearchResultEntry(p, ProductDaoUtil.countMatches(p, q)))
+                .map(p -> new SearchResultEntry(p, ProductUtil.countMatches(p, q)))
                 .filter(s -> s.getCountOfMatches() > 0)
                 .collect(Collectors.toList());
     }

@@ -8,25 +8,23 @@ import com.es.phoneshop.exceptions.OutOfStockException;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
+import com.es.phoneshop.model.product.ProductUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.util.Currency;
 import java.util.Optional;
 
 public class DefaultCartService implements CartService {
 
     private static final String CART_ATTRIBUTE = "cart_" + DefaultCartService.class;
     private ProductDao productDao;
-    private Currency currency;
 
     private static DefaultCartService instance;
 
     private DefaultCartService() {
         productDao = ArrayListProductDao.getInstance();
-        currency = Currency.getInstance("USD");
     }
 
     public static DefaultCartService getInstance() {
@@ -127,7 +125,7 @@ public class DefaultCartService implements CartService {
     @Override
     public String getTotalPrice(HttpServletRequest request, Cart cart) {
         NumberFormat format = NumberFormat.getCurrencyInstance(request.getLocale());
-        format.setCurrency(currency);
+        format.setCurrency(ProductUtil.CURRENCY);
         return format.format(cart.getTotal());
     }
 

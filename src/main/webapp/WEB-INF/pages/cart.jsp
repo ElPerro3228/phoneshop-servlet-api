@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
-<tags:master pageTitle="Product Details">
+<tags:master pageTitle="Cart">
     <p>
         Welcome to Expert-Soft training!
     </p>
@@ -61,5 +61,10 @@
             </div>
             </div>
         </c:forEach>
+        <div class="container">
+            <a href="${pageContext.servletContext.contextPath}/checkout" class="waves-effect waves-light btn">
+                Create order
+            </a>
+        </div>
     </div>
 </tags:master>
