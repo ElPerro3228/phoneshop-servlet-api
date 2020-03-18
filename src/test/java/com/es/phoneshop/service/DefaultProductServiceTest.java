@@ -22,6 +22,7 @@ import java.util.TreeMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -50,7 +51,7 @@ public class DefaultProductServiceTest {
         entries.add(new SearchResultEntry(product1, 1));
         entries.add(new SearchResultEntry(product2, 1));
 
-        when(productDao.findProducts(eq("A B"))).thenReturn(entries);
+        when(productDao.findProducts(eq("A B"), anyBoolean())).thenReturn(entries);
 
         List<Product> products = defaultProductService.createProductList("A B", SortOrder.asc, SortField.price);
 
@@ -66,7 +67,7 @@ public class DefaultProductServiceTest {
         entries.add(new SearchResultEntry(product1, 1));
         entries.add(new SearchResultEntry(product2, 2));
 
-        when(productDao.findProducts(eq("A B"))).thenReturn(entries);
+        when(productDao.findProducts(eq("A B"), anyBoolean())).thenReturn(entries);
 
         List<Product> products = defaultProductService.createProductList("A B", null, null);
 

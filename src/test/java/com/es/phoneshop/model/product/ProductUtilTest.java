@@ -23,12 +23,12 @@ public class ProductUtilTest {
     @Test
     public void shouldReturnZeroWhenAnyMatchesWasNotFound() {
         Product product = new Product(1L, "sgs", "Samsung Galaxy S", new BigDecimal(100), Currency.getInstance("USD"), 100, "h", priceHistory);
-        assertEquals(0, ProductUtil.countMatches(product, "r"));
+        assertEquals(0, ProductUtil.countMatches(product, "r", true));
     }
 
     @Test
     public void shouldSetCorrectNumberOfMatchesWhenWasFoundAnyCoincidences() {
         Product product = new Product(1L, "sgs", "Samsung Galaxy S", new BigDecimal(100), Currency.getInstance("USD"), 100, "h", priceHistory);
-        assertEquals(1, ProductUtil.countMatches(product, "Samsung"));
+        assertEquals(1, ProductUtil.countMatches(product, "Samsung", true));
     }
 }

@@ -30,12 +30,12 @@ public class ArrayListProductDaoTest
 
     @Test
     public void shouldNotFindAnyProductWhenThereAreNoAnyMatches() {
-        assertTrue(productDao.findProducts("w").isEmpty());
+        assertTrue(productDao.findProducts("w", true).isEmpty());
     }
 
     @Test
     public void shouldFindProductsWhenThereAreMatches() {
-        assertFalse(productDao.findProducts("Apple").isEmpty());
+        assertFalse(productDao.findProducts("Apple", true).isEmpty());
     }
 
     @Test
@@ -48,9 +48,9 @@ public class ArrayListProductDaoTest
 
     @Test
     public void shouldAddProductWithNoExistingId() {
-        int startSize = productDao.findProducts("").size();
+        int startSize = productDao.findProducts("", true).size();
         productDao.save(new Product (100L, "", "Samsung ", new BigDecimal(1), usd, 1, "", priceHistory));
-        int endSize = productDao.findProducts("").size();
+        int endSize = productDao.findProducts("", true).size();
         assertTrue(startSize < endSize);
     }
 
@@ -62,9 +62,9 @@ public class ArrayListProductDaoTest
 
     @Test
     public void shouldDeleteProductWithExistingId() {
-        int startSize = productDao.findProducts("").size();
+        int startSize = productDao.findProducts("", true).size();
         productDao.delete(8L);
-        int endSize = productDao.findProducts("").size();
+        int endSize = productDao.findProducts("", true).size();
         assertTrue(startSize > endSize);
     }
 
