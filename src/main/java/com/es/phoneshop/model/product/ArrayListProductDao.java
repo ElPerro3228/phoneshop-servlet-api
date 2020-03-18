@@ -32,12 +32,12 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
-    public synchronized List<SearchResultEntry> findProducts(String q) {
+    public synchronized List<SearchResultEntry> findProducts(String q, boolean flag) {
         return products.stream()
                 .filter(p -> p.getPrice() != null)
                 .filter(p -> p.getPrice().doubleValue() > 0)
                 .filter(p -> p.getStock() > 0)
-                .map(p -> new SearchResultEntry(p, ProductUtil.countMatches(p, q)))
+                .map(p -> new SearchResultEntry(p, ProductUtil.countMatches(p, q, flag)))
                 .filter(s -> s.getCountOfMatches() > 0)
                 .collect(Collectors.toList());
     }

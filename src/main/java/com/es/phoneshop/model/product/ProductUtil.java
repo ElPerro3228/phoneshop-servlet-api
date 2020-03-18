@@ -7,11 +7,18 @@ public final class ProductUtil {
 
     public static final Currency CURRENCY = Currency.getInstance("USD");
 
-    public static int countMatches(Product p, String query) {
+    public static int countMatches(Product p, String query, boolean flag) {
         int countMatches = 0;
-        String[] splittedQuery = query.toLowerCase().split(" ");
-        for (String s : splittedQuery) {
-            if (p.getDescription().toLowerCase().contains(s)) {
+        String[] splittedQuery;
+        if (flag == true) {
+            splittedQuery = query.toLowerCase().split(" ");
+            for (String s : splittedQuery) {
+                if (p.getDescription().toLowerCase().contains(s)) {
+                    countMatches++;
+                }
+            }
+        } else {
+            if (p.getDescription().toLowerCase().contains(query.toLowerCase())) {
                 countMatches++;
             }
         }

@@ -65,6 +65,15 @@
                     <input id="phone" name="phone">
                 </td>
             </tr>
+            <tr>
+                <td>Payment</td>
+                <td>
+                    <input type="radio" id="cart" name="payment" value="Cart">
+                    <label for="cart">Cart</label>
+                    <input type="radio" id="cash" name="payment" value="Cash">
+                    <label for="cash">Cash</label>
+                </td>
+            </tr>
         </table>
         <h5 class="error-message" style="color: red"></h5>
         <div class="row">

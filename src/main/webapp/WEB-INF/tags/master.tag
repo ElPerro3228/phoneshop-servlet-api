@@ -27,6 +27,9 @@
     </div>
   </header>
   <main>
+    <a href="${pageContext.servletContext.contextPath}/advancedSearch" class="waves-effect waves-light btn">
+      Advanced Search
+    </a>
     <jsp:doBody/>
     <tags:recentWatched/>
   </main>

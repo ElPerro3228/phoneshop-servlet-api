@@ -3,6 +3,7 @@ package com.es.phoneshop.web;
 import com.es.phoneshop.exceptions.OrderNotFoundException;
 import com.es.phoneshop.model.order.Order;
 import com.es.phoneshop.model.order.OrderDao;
+import com.es.phoneshop.model.order.Payment;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,6 +58,7 @@ public class OrderOverviewPageServletTest {
         Order order = new Order();
         order.setSubtotalPrice(new BigDecimal(100));
         order.setDeliveryPrice(new BigDecimal(100));
+        order.setPayment(Payment.CART);
         when(request.getPathInfo()).thenReturn(uuid.toString());
         when(orderDao.getOrder(any())).thenReturn(Optional.of(order));
 
