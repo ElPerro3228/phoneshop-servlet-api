@@ -36,7 +36,7 @@ public class DefaultProductService implements ProductService {
         }
         return entries.stream()
                 .map(SearchResultEntry::getProduct)
-                .sorted(ProductDaoUtil.getComparator(sortField, sortOrder))
+                .sorted(ProductUtil.getComparator(sortField, sortOrder))
                 .collect(Collectors.toList());
     }
 }

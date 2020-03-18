@@ -1,8 +1,11 @@
 package com.es.phoneshop.model.product;
 
 import java.util.Comparator;
+import java.util.Currency;
 
-public final class ProductDaoUtil {
+public final class ProductUtil {
+
+    public static final Currency CURRENCY = Currency.getInstance("USD");
 
     public static int countMatches(Product p, String query) {
         int countMatches = 0;

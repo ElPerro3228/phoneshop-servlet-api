@@ -11,7 +11,7 @@ import java.util.TreeMap;
 
 import static org.junit.Assert.*;
 
-public class ProductDaoUtilTest {
+public class ProductUtilTest {
 
     private Map<Date, BigDecimal> priceHistory;
 
@@ -23,12 +23,12 @@ public class ProductDaoUtilTest {
     @Test
     public void shouldReturnZeroWhenAnyMatchesWasNotFound() {
         Product product = new Product(1L, "sgs", "Samsung Galaxy S", new BigDecimal(100), Currency.getInstance("USD"), 100, "h", priceHistory);
-        assertEquals(0, ProductDaoUtil.countMatches(product, "r"));
+        assertEquals(0, ProductUtil.countMatches(product, "r"));
     }
 
     @Test
     public void shouldSetCorrectNumberOfMatchesWhenWasFoundAnyCoincidences() {
         Product product = new Product(1L, "sgs", "Samsung Galaxy S", new BigDecimal(100), Currency.getInstance("USD"), 100, "h", priceHistory);
-        assertEquals(1, ProductDaoUtil.countMatches(product, "Samsung"));
+        assertEquals(1, ProductUtil.countMatches(product, "Samsung"));
     }
 }
