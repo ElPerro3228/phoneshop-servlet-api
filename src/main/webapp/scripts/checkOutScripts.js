@@ -3,6 +3,7 @@ $(document).on("click", "#make-order", function () {
     var surname = $("#surname").val();
     var addres = $("#address").val();
     var phone = $("#phone").val();
+    var payment = document.querySelector('input[name = payment]:checked').value;
     $.ajax({
         type: "POST",
         url: window.location.href,
@@ -10,7 +11,8 @@ $(document).on("click", "#make-order", function () {
             name: name,
             surname: surname,
             address: addres,
-            phone: phone
+            phone: phone,
+            payment: payment
         },
         success: function (responseText) {
             window.location.href = responseText;

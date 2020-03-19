@@ -65,6 +65,10 @@
                     ${phone}
                 </td>
             </tr>
+            <tr>
+                <td>Payment</td>
+                <td>${payment}</td>
+            </tr>
         </table>
         <div class="row" style="border: 1px;">
         <c:forEach var="item" items="${cart}">

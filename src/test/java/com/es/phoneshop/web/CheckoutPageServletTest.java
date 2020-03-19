@@ -1,11 +1,12 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.exceptions.EmptyCartException;
 import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartItem;
 import com.es.phoneshop.model.order.Order;
-import com.es.phoneshop.model.order.OrderDao;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.service.CartService;
+import com.es.phoneshop.service.OrderService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,6 @@ import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,8 +29,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CheckoutPageServletTest {
@@ -38,14 +37,11 @@ public class CheckoutPageServletTest {
     private static final BigDecimal TOTAL_PRICE = new BigDecimal(100);
     private static final BigDecimal DELIVERY_PRICE = new BigDecimal(20);
     private static final String STRING_TOTAL_PRICE = "100 USD";
-    private static final String REQUEST_PARAMETER = "some text";
 
     @Spy
     private BigDecimal deliveryPrice = new BigDecimal(20);
     @Mock
     private PrintWriter writer;
-    @Mock
-    private OrderDao orderDao;
     @Mock
     private CartService cartService;
     @Mock
@@ -54,14 +50,14 @@ public class CheckoutPageServletTest {
     private HttpServletRequest request;
     @Mock
     private HttpServletResponse response;
+    @Mock
+    private OrderService orderService;
     @InjectMocks
     private CheckoutPageServlet servlet;
     @Captor
     private ArgumentCaptor<BigDecimal> bigDecimalArgumentCaptor;
     @Captor
     private ArgumentCaptor<String> stringArgumentCaptor;
-    @Captor
-    private ArgumentCaptor<Order> orderArgumentCaptor;
 
     @Before
     public void setup() throws ServletException {
@@ -71,7 +67,6 @@ public class CheckoutPageServletTest {
         cart.setTotal(TOTAL_PRICE);
         when(cartService.getCart(request)).thenReturn(cart);
         when(cartService.getTotalPrice(request, cart)).thenReturn(STRING_TOTAL_PRICE);
-        when(request.getParameter(anyString())).thenReturn(REQUEST_PARAMETER);
     }
 
     @Test
@@ -89,19 +84,21 @@ public class CheckoutPageServletTest {
 
     @Test
     public void testDoPost() throws ServletException, IOException {
+        Order order = new Order();
+        order.setId(UUID.randomUUID());
         when(response.getWriter()).thenReturn(writer);
         when(request.getRequestURI()).thenReturn("test");
+        when(orderService.placeOrder(request, deliveryPrice)).thenReturn(order);
         servlet.doPost(request, response);
 
-        verify(orderDao).save(orderArgumentCaptor.capture());
         verify(writer).write(stringArgumentCaptor.capture());
 
-        assertEquals("test/" + orderArgumentCaptor.getValue().getId(), stringArgumentCaptor.getValue());
+        assertEquals("test/" + order.getId(), stringArgumentCaptor.getValue());
     }
 
     @Test
     public void shouldCatchEmptyCartException() throws ServletException, IOException {
-        when(cartService.getCart(request)).thenReturn(new Cart());
+        when(orderService.placeOrder(request, deliveryPrice)).thenThrow(new EmptyCartException("Your cart is empty"));
         when(response.getWriter()).thenReturn(writer);
 
         servlet.doPost(request, response);
@@ -114,7 +111,7 @@ public class CheckoutPageServletTest {
     @Test
     public void shouldCatchIllegalArgumentException() throws ServletException, IOException {
         when(response.getWriter()).thenReturn(writer);
-        when(request.getParameter(anyString())).thenReturn("");
+        when(orderService.placeOrder(request, deliveryPrice)).thenThrow(new IllegalArgumentException("Please fill out all fields"));
 
         servlet.doPost(request, response);
 

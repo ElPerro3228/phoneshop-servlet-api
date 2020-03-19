@@ -36,6 +36,7 @@ public class OrderOverviewPageServlet extends HttpServlet {
             request.setAttribute("phone", order.getPhoneNumber());
             request.setAttribute("cart", order.getCart());
             request.setAttribute("currency", ProductUtil.CURRENCY);
+            request.setAttribute("payment", order.getPayment().getValue());
             request.getRequestDispatcher("/WEB-INF/pages/overview.jsp").forward(request, response);
         } catch (OrderNotFoundException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

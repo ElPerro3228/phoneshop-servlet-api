@@ -16,6 +16,7 @@ public class Order {
     private UUID id;
     private BigDecimal subtotalPrice;
     private BigDecimal deliveryPrice;
+    private Payment payment;
 
     public Order(String name, String surname, String address, String phoneNumber, List<CartItem> cart, UUID id,
                  BigDecimal subtotalPrice, BigDecimal deliveryPrice) {
@@ -27,6 +28,19 @@ public class Order {
         this.id = id;
         this.subtotalPrice = subtotalPrice;
         this.deliveryPrice = deliveryPrice;
+    }
+
+    public Order(String name, String surname, String address, String phoneNumber, List<CartItem> cart, UUID id,
+                 BigDecimal subtotalPrice, BigDecimal deliveryPrice, Payment payment) {
+        this.name = name;
+        this.surname = surname;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.cart = cart;
+        this.id = id;
+        this.subtotalPrice = subtotalPrice;
+        this.deliveryPrice = deliveryPrice;
+        this.payment = payment;
     }
 
     public Order() {
@@ -94,5 +108,13 @@ public class Order {
 
     public void setDeliveryPrice(BigDecimal deliveryPrice) {
         this.deliveryPrice = deliveryPrice;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

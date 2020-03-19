@@ -53,6 +53,7 @@ public class ArrayListOrderDao implements OrderDao {
         found.setId(order.getId());
         found.setSubtotalPrice(order.getSubtotalPrice());
         found.setDeliveryPrice(order.getDeliveryPrice());
+        found.setPayment(order.getPayment());
     }
 
     @Override
